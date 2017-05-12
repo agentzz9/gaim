@@ -1,4 +1,9 @@
-<html><head></head><body></body>
+<html><head><style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style></head><body></body>
 <script type="text/javascript">
 var player, goal;
 
@@ -6,8 +11,11 @@ function component(width, height, color, x, y, type) {
 
 	this.type = type;
 	if (type == "image") {
-    	this.image = new Image();
-    	this.image.src = color;
+    	//this.image = new Image();
+    	//this.image.src = color;//take from profile? camera ?
+    	//above code snippet giving issues apparently the image has to be already loaded:(
+  		this.image = document.getElementById("selfie");
+
   	}
 
 	this.width = width;
@@ -63,7 +71,6 @@ var gameArea = {
     start : function() {
         this.canvas.width = 900;
         this.canvas.height = 1300;
-        this.canvas.style = "background:dimgray";
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -82,9 +89,10 @@ function updateGameArea(){
 	/*detect collisions, win/lose conditions, parse inputs, 
 		trigger random obstacles ?, set speeds of components
 	*/
-	gameArea.clear();
+	player.update();
+	//gameArea.clear();
 	gameArea.frameNo+=1;
-
+	console.log(gameArea.frameNo);
 	/*
 	update components.redraw frame
 	*/
@@ -93,13 +101,15 @@ function updateGameArea(){
 function startGame(){
 	
 	//initialize objects,
-
+	player  = new component(80, 80, "playerimage.png", 10, 10, "image");
 	gameArea.start();
 
 }
-
-startGame();
-
+function stopGame(){
+	gameArea.stop();
+}
 </script>
-
+<button onclick="startGame()">startgame</button>
+ <button onclick="stopGame()">stopgame</button>
+ <img hidden id="selfie" src="playerimage.jpg"/>
 </html>
