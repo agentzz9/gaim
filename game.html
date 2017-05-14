@@ -14,7 +14,7 @@ function component(width, height, color, x, y, type) {
     	//this.image = new Image();
     	//this.image.src = color;//take from profile? camera ?
     	//above code snippet giving issues apparently the image has to be already loaded:(
-  		this.image = document.getElementById("selfie");
+  		this.image = document.getElementById(color);
 
   	}
 
@@ -65,20 +65,55 @@ function component(width, height, color, x, y, type) {
         return crash;
     }
 
+    this.isTouched = function() {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var touched = true;
+        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) //TODO for multi touch checks refactor this.
+         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
+            touched = false;
+        }
+        return touched;
+    }
+
 }
 var gameArea = {
 	canvas: document.createElement("canvas"),
+    
     start : function() {
         this.canvas.width = 900;
-        this.canvas.height = 1300;
+        this.canvas.height = 1300;//900;// took some space out for controls later
+       
         this.context = this.canvas.getContext("2d");
+        
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        
         this.frameNo = 0;
 
+        window.addEventListener('touchstart', function (e) {
+            console.log(e);
+
+        })
+        window.addEventListener('touchend', function (e) {
+            
+
+        })
+
+
+
+
         this.interval = setInterval(updateGameArea, 20);
+
+
+
+
+
     },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //this.controlContext.clearRect(); .... needed ?
     },
     stop : function() {
         clearInterval(this.interval);
@@ -90,19 +125,34 @@ function updateGameArea(){
 		trigger random obstacles ?, set speeds of components
 	*/
 	player.update();
+
+    uparrow.update();
+    downarrow.update();
+    leftarrow.update();
+    rightarrow.update();
+    bottomLine.update();
 	//gameArea.clear();
-	gameArea.frameNo+=1;
-	console.log(gameArea.frameNo);
+	gameArea.frameNo += 1;
+	//console.log(gameArea.frameNo);
 	/*
 	update components.redraw frame
 	*/
+
 	
 }
 function startGame(){
 	
 	//initialize objects,
-	player  = new component(80, 80, "playerimage.png", 10, 10, "image");
-	gameArea.start();
+	player  = new component(80, 80, "selfie", 10, 10, "image");
+
+
+    uparrow = new component(150, 150, "uparrow", 100, 960, "image");
+    downarrow = new component(150, 150, "downarrow", 100, 960+150, "image");
+    leftarrow = new component(150, 150, "leftarrow", 100+350, 990, "image");
+    rightarrow = new component(150, 150, "rightarrow", 100+350+170, 990, "image");
+    bottomLine = new component(2000, 5, "black", 0, 950);//the len = 2000 behaves wierd. canvas.width not working :(
+
+    gameArea.start();
 
 }
 function stopGame(){
@@ -110,6 +160,13 @@ function stopGame(){
 }
 </script>
 <button onclick="startGame()">startgame</button>
- <button onclick="stopGame()">stopgame</button>
- <img hidden id="selfie" src="playerimage.jpg"/>
+<button onclick="stopGame()">stopgame</button>
+<img hidden id="selfie" src="playerimage.jpg"/>
+ 
+<img hidden id="uparrow" src="uparrow.png"/>
+<img hidden id="downarrow" src="downarrow.png"/>
+<img hidden id="leftarrow" src="leftarrow.png"/>
+<img hidden id="rightarrow" src="rightarrow.png"/>
+
+ 
 </html>
