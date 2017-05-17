@@ -83,8 +83,8 @@ var gameArea = {
 	canvas: document.createElement("canvas"),
     
     start : function() {
-        this.canvas.width = 900;
-        this.canvas.height = 1300;//900;// took some space out for controls later
+        this.canvas.width = 1320;
+        this.canvas.height = 600;
        
         this.context = this.canvas.getContext("2d");
         
@@ -92,14 +92,14 @@ var gameArea = {
         
         this.frameNo = 0;
 
-        window.addEventListener('touchstart', function (e) {
+        /*window.addEventListener('touchstart', function (e) {
             console.log(e);
 
         })
         window.addEventListener('touchend', function (e) {
             
 
-        })
+        })*/
 
 
 
@@ -126,11 +126,11 @@ function updateGameArea(){
 	*/
 	player.update();
 
-    uparrow.update();
+    /*uparrow.update();
     downarrow.update();
     leftarrow.update();
     rightarrow.update();
-    bottomLine.update();
+    bottomLine.update();*/
 	//gameArea.clear();
 	gameArea.frameNo += 1;
 	//console.log(gameArea.frameNo);
@@ -146,11 +146,11 @@ function startGame(){
 	player  = new component(80, 80, "selfie", 10, 10, "image");
 
 
-    uparrow = new component(150, 150, "uparrow", 100, 960, "image");
+    /*uparrow = new component(150, 150, "uparrow", 100, 960, "image");
     downarrow = new component(150, 150, "downarrow", 100, 960+150, "image");
     leftarrow = new component(150, 150, "leftarrow", 100+350, 990, "image");
     rightarrow = new component(150, 150, "rightarrow", 100+350+170, 990, "image");
-    bottomLine = new component(2000, 5, "black", 0, 950);//the len = 2000 behaves wierd. canvas.width not working :(
+    bottomLine = new component(2000, 5, "black", 0, 950);//the len = 2000 behaves wierd. canvas.width not working :(*/
 
     gameArea.start();
 
@@ -163,10 +163,10 @@ function stopGame(){
 <button onclick="stopGame()">stopgame</button>
 <img hidden id="selfie" src="playerimage.jpg"/>
  
-<img hidden id="uparrow" src="uparrow.png"/>
+<!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
 <img hidden id="leftarrow" src="leftarrow.png"/>
-<img hidden id="rightarrow" src="rightarrow.png"/>
+<img hidden id="rightarrow" src="rightarrow.png"/> -->
 
  
 </html>
