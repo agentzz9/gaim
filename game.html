@@ -4,111 +4,28 @@ canvas {
     background-color: #f1f1f1;
 }
 </style></head><body></body>
+<script src="./Objects.js"></script>
 <script type="text/javascript">
-var player, goal;
-
-function component(width, height, color, x, y, type) {
-
-	this.type = type;
-	if (type == "image") {
-    	//this.image = new Image();
-    	//this.image.src = color;//take from profile? camera ?
-    	//above code snippet giving issues apparently the image has to be already loaded:(
-  		this.image = document.getElementById(color);
-
-  	}
-
-	this.width = width;
-	this.height = height;
-	this.color = color;
-	this.x = x;
-	this.y = y;
-	
-
-	this.speedX = 0;
-	this.speedY = 0;
-
-
-	this.update = function() {
-        ctx = gameArea.context;
-        if (type == "image") {
-      		ctx.drawImage(this.image, 
-        	this.x, 
-        	this.y,
-        	this.width, this.height);
-   		}else if (this.type == "text") {
-            ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
-            ctx.fillText(this.text, this.x, this.y);
-        } else { //rect
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);
-        }
-    }
-	this.newPos = function() {
-        this.x += this.speedX;
-        this.y += this.speedY;        
-    }
-	this.crashWith = function(otherobj) {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var otherleft = otherobj.x;
-        var otherright = otherobj.x + (otherobj.width);
-        var othertop = otherobj.y;
-        var otherbottom = otherobj.y + (otherobj.height);
-        var crash = true;
-        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-            crash = false;
-        }
-        return crash;
-    }
-
-    this.isTouched = function() {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var touched = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) //TODO for multi touch checks refactor this.
-         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
-            touched = false;
-        }
-        return touched;
-    }
-
-}
+var PLAYER, goal;
+var ROADLINE;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     
     start : function() {
         this.canvas.width = 1320;
         this.canvas.height = 600;
-       
+        this.canvas.style = "background-color:#404142";
         this.context = this.canvas.getContext("2d");
-        
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        
         this.frameNo = 0;
-
-        /*window.addEventListener('touchstart', function (e) {
-            console.log(e);
-
+        window.addEventListener('keydown', function (e) {
+            gameArea.keys = (gameArea.keys || []);
+            gameArea.keys[e.keyCode] = true;
         })
-        window.addEventListener('touchend', function (e) {
-            
-
-        })*/
-
-
-
-
+        window.addEventListener('keyup', function (e) {
+            gameArea.keys[e.keyCode] = false; 
+        })
         this.interval = setInterval(updateGameArea, 20);
-
-
-
-
 
     },
     clear : function() {
@@ -124,7 +41,8 @@ function updateGameArea(){
 	/*detect collisions, win/lose conditions, parse inputs, 
 		trigger random obstacles ?, set speeds of components
 	*/
-	player.update();
+	PLAYER.update();
+    ROADLINE.update();
 
     /*uparrow.update();
     downarrow.update();
@@ -143,8 +61,8 @@ function updateGameArea(){
 function startGame(){
 	
 	//initialize objects,
-	player  = new component(80, 80, "selfie", 10, 10, "image");
-
+	PLAYER  = new Component(216/3, 490/3, "car", 10, 10, "image");
+    ROADLINE = new Component(40, 160, "white", gameArea.canvas.width,10);
 
     /*uparrow = new component(150, 150, "uparrow", 100, 960, "image");
     downarrow = new component(150, 150, "downarrow", 100, 960+150, "image");
@@ -161,7 +79,7 @@ function stopGame(){
 </script>
 <button onclick="startGame()">startgame</button>
 <button onclick="stopGame()">stopgame</button>
-<img hidden id="selfie" src="playerimage.jpg"/>
+<img hidden id="car" src="carimage.png"/>
  
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
