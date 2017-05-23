@@ -19,6 +19,7 @@ var gameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         window.addEventListener('keydown', function (e) {
+            e.preventDefault();//prevent scroll of window :(
             gameArea.keys = (gameArea.keys || []);
             gameArea.keys[e.keyCode] = true;
         })
@@ -44,25 +45,35 @@ function updateGameArea(){
 	PLAYER.update();
     ROADLINE.update();
 
-    /*uparrow.update();
-    downarrow.update();
-    leftarrow.update();
-    rightarrow.update();
-    bottomLine.update();*/
-	//gameArea.clear();
+    if (gameArea.keys && gameArea.keys[37]) {PLAYER.speedX = -10; }
+    if (gameArea.keys && gameArea.keys[39]) {PLAYER.speedX = 10; }
+    if (gameArea.keys && gameArea.keys[38]) {//PLAYER.speedY = -1;
+        //this will need to changed to move oher stuff instead of the car along y 
+    }
+    if (gameArea.keys && gameArea.keys[40]) {//PLAYER.speedY = 1;//similarly here
+    }
+
+
+	gameArea.clear();
 	gameArea.frameNo += 1;
 	//console.log(gameArea.frameNo);
 	/*
 	update components.redraw frame
 	*/
+    PLAYER.newPos();
+    PLAYER.update();
+    
 
 	
 }
 function startGame(){
 	
 	//initialize objects,
-	PLAYER  = new Component(216/3, 490/3, "car", 10, 10, "image");
-    ROADLINE = new Component(40, 160, "white", gameArea.canvas.width,10);
+//	PLAYER  = new Component(216/3, 490/3, "car", 10, 10, "image");
+    PLAYER  = new Component(216/3, 490/3, "red", gameArea.canvas.width/2 ,
+            gameArea.canvas.height*0.70);
+ 
+    ROADLINE = new Component(40, 160, "white", gameArea.canvas.width*.33,10);
 
     /*uparrow = new component(150, 150, "uparrow", 100, 960, "image");
     downarrow = new component(150, 150, "downarrow", 100, 960+150, "image");
