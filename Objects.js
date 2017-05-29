@@ -69,3 +69,7 @@ function Component(width, height, color, x, y, type) {
     }
 
 }
+
+function RoadLine(){
+
+}

@@ -7,6 +7,7 @@ canvas {
 <script src="./Objects.js"></script>
 <script type="text/javascript">
 var PLAYER, goal;
+var leftWall, rightWall;
 var roadlines = [];
 var gameArea = {
 	canvas: document.createElement("canvas"),
@@ -55,6 +56,9 @@ function updateGameArea(){
 
     if (gameArea.keys && gameArea.keys[37]) {PLAYER.speedX = -10; }
     if (gameArea.keys && gameArea.keys[39]) {PLAYER.speedX = 10; }
+    if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]){
+        PLAYER.speedX = 0;//no left/right reset steer to straight
+    }
     if (gameArea.keys && gameArea.keys[38]) {//PLAYER.speedY = -1;
         //this will need to changed to move oher stuff instead of the car along y 
     }
@@ -72,7 +76,10 @@ function updateGameArea(){
     PLAYER.update();
     roadline.newPos();
     roadline.update();
-
+    leftWall.newPos();
+    leftWall.update();
+    rightWall.newPos();
+    rightWall.update();
 	
 }
 function startGame(){
@@ -82,6 +89,10 @@ function startGame(){
     PLAYER  = new Component(216/3, 490/3, "red", gameArea.canvas.width/2 ,
             gameArea.canvas.height*0.70);
  
+    leftWall = new Component(gameArea.canvas.width*.33, 2000, "green", 0, -10);
+
+    rightWall = new Component(gameArea.canvas.width*.33, 2000, "green",
+            gameArea.canvas.width*.67, -10);
     roadline = new Component(40, 160, "white", gameArea.canvas.width*.33,10);
 
     /*uparrow = new component(150, 150, "uparrow", 100, 960, "image");
