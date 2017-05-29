@@ -8,6 +8,7 @@ canvas {
 <script type="text/javascript">
 var PLAYER, goal;
 var leftWall, rightWall;
+var sideline1, sideline2;
 var roadlines = [];
 var gameArea = {
 	canvas: document.createElement("canvas"),
@@ -54,13 +55,17 @@ function updateGameArea(){
     
     }
 
-    if (gameArea.keys && gameArea.keys[37]) {PLAYER.speedX = -10; }
-    if (gameArea.keys && gameArea.keys[39]) {PLAYER.speedX = 10; }
+    if (gameArea.keys && gameArea.keys[37]) {moveLeft(); }
+    if (gameArea.keys && gameArea.keys[39]) {moveRight(); }
     if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]){
-        PLAYER.speedX = 0;//no left/right reset steer to straight
+        moveLeftRight();//no left/right reset steer to straight
     }
     if (gameArea.keys && gameArea.keys[38]) {//PLAYER.speedY = -1;
+        moveUp();
         //this will need to changed to move oher stuff instead of the car along y 
+    }
+    if(gameArea.keys && !gameArea.keys[38]){
+        moveUpDown();    
     }
     if (gameArea.keys && gameArea.keys[40]) {//PLAYER.speedY = 1;//similarly here
     }
@@ -72,15 +77,42 @@ function updateGameArea(){
 	/*
 	update components.redraw frame
 	*/
-    PLAYER.newPos();
-    PLAYER.update();
-    roadline.newPos();
-    roadline.update();
+    
+    for(i=0; i<roadlines.length; i+=1){
+      roadlines[i].newPos();
+      roadlines[i].update();
+    }
     leftWall.newPos();
     leftWall.update();
     rightWall.newPos();
     rightWall.update();
+    sideline1.newPos();
+    sideline1.update();
+    sideline2.newPos();
+    sideline2.update();
+
+    PLAYER.newPos();
+    PLAYER.update();
 	
+}
+function moveLeft(){
+    PLAYER.speedX = -10;
+}
+function moveRight(){
+    PLAYER.speedX = +10;
+}
+function moveLeftRight(){
+    PLAYER.speedX = 0;
+}
+function moveUp(){
+    for(i=0; i<roadlines.length; i+=1){
+        roadlines[i].speedY  = +10; 
+    }
+}
+function moveUpDown(){
+    for(i=0; i<roadlines.length; i+=1){
+        roadlines[i].speedY  = 0; 
+    }
 }
 function startGame(){
 	
@@ -93,8 +125,12 @@ function startGame(){
 
     rightWall = new Component(gameArea.canvas.width*.33, 2000, "green",
             gameArea.canvas.width*.67, -10);
-    roadline = new Component(40, 160, "white", gameArea.canvas.width*.33,10);
-
+    sideline1 = new Component(15, 3000, "white", (gameArea.canvas.width*.33)+6,
+            -10);
+    sideline2 = new Component(15, 3000, "white",
+            (gameArea.canvas.width*.67)-21,-10);
+    roadline = new Component(15, 160, "white", (gameArea.canvas.width*.5)-6,10);
+    roadlines.push(roadline);
     /*uparrow = new component(150, 150, "uparrow", 100, 960, "image");
     downarrow = new component(150, 150, "downarrow", 100, 960+150, "image");
     leftarrow = new component(150, 150, "leftarrow", 100+350, 990, "image");
