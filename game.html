@@ -60,14 +60,13 @@ function updateGameArea(){
     if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]){
         moveLeftRight();//no left/right reset steer to straight
     }
-    if (gameArea.keys && gameArea.keys[38]) {//PLAYER.speedY = -1;
+    if (gameArea.keys && gameArea.keys[38]) {
         moveUp();
-        //this will need to changed to move oher stuff instead of the car along y 
     }
     if(gameArea.keys && !gameArea.keys[38]){
-        moveUpDown();    
+        moveUpDown();    //placeholder logic to reset fwd movement for now.
     }
-    if (gameArea.keys && gameArea.keys[40]) {//PLAYER.speedY = 1;//similarly here
+    if (gameArea.keys && gameArea.keys[40]) {//brakes?
     }
 
 
