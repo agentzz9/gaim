@@ -52,7 +52,15 @@ function updateGameArea(){
 		trigger random obstacles ?, set speeds of components
 	*/
     for(i=0; i<roadlines.length; i+=1){
-    
+        if(roadlines[i].y >= gameArea.canvas.height){
+            roadlines.push(
+                     new Component(15, 100, "white", (gameArea.canvas.width*.5)-6,
+            0)
+
+                    );
+           roadlines.splice(0, 1); 
+            break;
+        }
     }
 
     if (gameArea.keys && gameArea.keys[37]) {moveLeft(); }
@@ -67,6 +75,9 @@ function updateGameArea(){
         moveUpDown();    //placeholder logic to reset fwd movement for now.
     }
     if (gameArea.keys && gameArea.keys[40]) {//brakes?
+        //rightnow coding reversed movt which can help find out things'
+        //behaviuor and debugging
+        moveDown();
     }
 
 
@@ -113,6 +124,11 @@ function moveUpDown(){
         roadlines[i].speedY  = 0; 
     }
 }
+function moveDown(){
+    for(i=0; i<roadlines.length; i+=1){
+        roadlines[i].speedY = -10;
+    }
+}
 function startGame(){
 	
 	//initialize objects,
@@ -128,14 +144,12 @@ function startGame(){
             -10);
     sideline2 = new Component(15, 3000, "white",
             (gameArea.canvas.width*.67)-21,-10);
-    roadline = new Component(15, 160, "white", (gameArea.canvas.width*.5)-6,10);
-    roadlines.push(roadline);
-    /*uparrow = new component(150, 150, "uparrow", 100, 960, "image");
-    downarrow = new component(150, 150, "downarrow", 100, 960+150, "image");
-    leftarrow = new component(150, 150, "leftarrow", 100+350, 990, "image");
-    rightarrow = new component(150, 150, "rightarrow", 100+350+170, 990, "image");
-    bottomLine = new component(2000, 5, "black", 0, 950);//the len = 2000 behaves wierd. canvas.width not working :(*/
-
+    roadline1 = new Component(15, 100, "white", (gameArea.canvas.width*.5)-6,10);
+    roadline2 = new Component(15, 100, "white", (gameArea.canvas.width*.5)-6,
+            300);
+    roadlines.push(roadline1);
+    roadlines.push(roadline2);
+    
     gameArea.start();
 
 }
