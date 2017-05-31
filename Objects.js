@@ -149,5 +149,5 @@ function RoadlineComponent(width, height, color, x, y, type) {
 function randXonRoad(){
     return Math.floor((Math.random() * 33) + 34);
 }
-function accelerate(v, accel, dt){ 
+function accelerate(speed){ 
     return v + (accel * dt);                                        }
