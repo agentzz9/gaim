@@ -110,7 +110,7 @@ function RoadlineComponent(width, height, color, x, y, type) {
         this.x += this.speedX;
         this.y += this.speedY;
         if(this.y > 600){
-            this.y = this.y%600;
+            this.y = -100;
         }
         if(this.y < -100){
             this.y = 600;
@@ -146,4 +146,6 @@ function RoadlineComponent(width, height, color, x, y, type) {
     }
 
 }
-
+function randXonRoad(){
+    return Math.floor((Math.random() * 33) + 34);
+}
