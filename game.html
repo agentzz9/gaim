@@ -75,7 +75,8 @@ function updateGameArea(){
         moveLeftRight();//no left/right reset steer to straight
     }
     if (gameArea.keys && gameArea.keys[38]) {
-        moveUp();
+        //moveUp();
+        accelerateUp();
     }
     if(gameArea.keys && !gameArea.keys[38]){
         moveUpDown();    //placeholder logic to reset fwd movement for now.
@@ -129,11 +130,11 @@ function moveLeftRight(){
 }
 function moveUp(){
     for(i=0; i<roadLines.length; i+=1){
-        roadLines[i].speedY  = +10; 
+        roadLines[i].speedY  = +1; 
     }
     roadLine1.speedY = +1;
     for(i=0; i<otherCars.length; i+=1){
-        otherCars[i].speedY += 10;
+        otherCars[i].speedY += 1;
     }
 }
 function moveUpDown(){
@@ -147,9 +148,25 @@ function moveUpDown(){
 }
 function moveDown(){
     for(i=0; i<roadLines.length; i+=1){
-        roadLines[i].speedY = -10;
+        roadLines[i].speedY = -1;
     }
     roadLine1.speedY = -1;
+}
+function accelerateUp(){
+        document.getElementById("speed").innerHTML =
+        Math.round(roadLine1.speedY);
+        document.getElementById("speed2").innerHTML
+        =Math.round(Math.cbrt(1/Math.max(roadLine1.speedY,1))); 
+
+
+    roadLine1.speedY += Math.cbrt(1/Math.max(roadLine1.speedY,1));
+
+}
+function accelerateDown(){
+
+}
+function accelerateDownBraking(){
+
 }
 function startGame(){
 	
@@ -185,6 +202,7 @@ function stopGame(){
 </script>
 <button onclick="startGame()">startgame</button>
 <button onclick="stopGame()">stopgame</button>
+<span id="speed"></span><span id="speed2"></span>
 <img hidden id="car" src="carimage.png"/>
  
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
