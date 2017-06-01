@@ -79,12 +79,14 @@ function updateGameArea(){
         accelerateUp();
     }
     if(gameArea.keys && !gameArea.keys[38]){
-        moveUpDown();    //placeholder logic to reset fwd movement for now.
+        //moveUpDown();    //placeholder logic to reset fwd movement for now.
+        accelerateDown();
     }
     if (gameArea.keys && gameArea.keys[40]) {//brakes?
         //rightnow coding reversed movt which can help find out things'
         //behaviuor and debugging
-        moveDown();
+        //moveDown();
+        accelerateDownBraking();
     }
 
 
@@ -167,8 +169,26 @@ function accelerateUp(){
 }
 function accelerateDown(){
 
+document.getElementById("speed").innerHTML =
+    Math.round(roadLine1.speedY);
+    //document.getElementById("speed2").innerHTML
+     //    ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
+     roadLine1.speedY = Math.max(
+            (roadLine1.speedY -
+                Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
+            ,0);
+    
 }
 function accelerateDownBraking(){
+
+    document.getElementById("speed").innerHTML =
+    Math.round(roadLine1.speedY);
+    //document.getElementById("speed2").innerHTML
+    //     ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
+     roadLine1.speedY = Math.max(
+            (roadLine1.speedY -
+                Math.cbrt(1/(100*Math.max(roadLine1.speedY,1))))
+            ,0);
 
 }
 function startGame(){
