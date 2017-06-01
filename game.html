@@ -66,6 +66,7 @@ function updateGameArea(){
     }*/
 
     for(i=0; i<otherCars.length; i+=1){
+        console.log(otherCars[i].y);
     }
     
 
@@ -75,17 +76,14 @@ function updateGameArea(){
         moveLeftRight();//no left/right reset steer to straight
     }
     if (gameArea.keys && gameArea.keys[38]) {
-        //moveUp();
+        
         accelerateUp();
     }
     if(gameArea.keys && !gameArea.keys[38]){
-        //moveUpDown();    //placeholder logic to reset fwd movement for now.
         accelerateDown();
     }
-    if (gameArea.keys && gameArea.keys[40]) {//brakes?
-        //rightnow coding reversed movt which can help find out things'
-        //behaviuor and debugging
-        //moveDown();
+    if (gameArea.keys && gameArea.keys[40]) {
+        
         accelerateDownBraking();
     }
 
@@ -96,17 +94,12 @@ function updateGameArea(){
 	/*
 	update components.redraw frame
 	*/
-    /* 
-    for(i=0; i<roadLines.length; i+=1){
-      roadLines[i].newPos();
-      roadLines[i].update();
-    }*/
+    
     roadLine1.newPos();
     roadLine1.update();
     for(i=0; i<otherCars.length; i+=1){
         otherCars[i].newPos();
         otherCars[i].update();
-    
     }
     leftWall.newPos();
     leftWall.update();
@@ -145,7 +138,7 @@ function moveUpDown(){
     }
     roadLine1.speedY = 0;
     for(i=0; i<otherCars.length; i+=1){
-        otherCars[i].speedY = 5; //TODO
+        //otherCars[i].speedY = 5; //TODO
     }
 }
 function moveDown(){
@@ -159,11 +152,18 @@ function accelerateUp(){
     Math.round(roadLine1.speedY);
     document.getElementById("speed2").innerHTML
          ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1)); 
-
+    var cacheRoadLine1Speed = roadLine1.speedY;
     roadLine1.speedY = Math.min(
             (roadLine1.speedY +
                 Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
             ,50);
+    
+    for(i=0; i<otherCars.length; i+=1){
+         otherCars[i].speedY = otherCars[i].speedY +
+        (roadLine1.speedY-cacheRoadLine1Speed);
+        //console.log(otherCars[i].speedY);
+    
+    }
     
 
 }
@@ -173,10 +173,21 @@ document.getElementById("speed").innerHTML =
     Math.round(roadLine1.speedY);
     //document.getElementById("speed2").innerHTML
      //    ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
+    var cacheRoadLine1Speed = roadLine1.speedY;
      roadLine1.speedY = Math.max(
             (roadLine1.speedY -
                 Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
             ,0);
+
+
+        for(i=0; i<otherCars.length; i+=1){
+         otherCars[i].speedY = otherCars[i].speedY - (cacheRoadLine1Speed -
+        roadLine1.speedY);
+
+        //console.log(otherCars[i].speedY);
+    
+    }
+
     
 }
 function accelerateDownBraking(){
@@ -185,10 +196,20 @@ function accelerateDownBraking(){
     Math.round(roadLine1.speedY);
     //document.getElementById("speed2").innerHTML
     //     ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
+        var cacheRoadLine1Speed = roadLine1.speedY;
+
      roadLine1.speedY = Math.max(
             (roadLine1.speedY -
                 Math.cbrt(1/(100*Math.max(roadLine1.speedY,1))))
             ,0);
+
+      for(i=0; i<otherCars.length; i+=1){
+         otherCars[i].speedY = otherCars[i].speedY - (cacheRoadLine1Speed -
+        roadLine1.speedY);
+
+        //console.log(otherCars[i].speedY);
+    }
+
 
 }
 function startGame(){
@@ -213,8 +234,8 @@ function startGame(){
     //roadLines.push(roadLine2);
 
     otherCar1 = new Component(50, 75, "blue", gameArea.canvas.width/2,
-            -10);
-    otherCar1.speedY = 0;
+            -25);
+    otherCar1.speedY = -1;
     otherCars.push(otherCar1);
     gameArea.start();
 
