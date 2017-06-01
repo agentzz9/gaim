@@ -8,6 +8,7 @@ canvas {
 <script type="text/javascript">
 var PLAYER, goal;
 var otherCars = [];
+var tempCar;
 var leftWall, rightWall;
 var sideline1, sideline2;
 var roadLines = [];
@@ -52,6 +53,19 @@ function updateGameArea(){
 	/*detect collisions, win/lose conditions, parse inputs, 
 		trigger random obstacles ?, set speeds of components
        */
+    if(everyinterval(900)){
+    
+        tempCar = new Component(50, 75, "blue", gameArea.canvas.width/2,
+            -25);
+       tempCar.speedY = -1; 
+       otherCars.push(tempCar);
+       if(otherCars.length ==5 ){
+           debugger;
+       }
+
+
+   //console.log(otherCars[otherCars.length-1].speedY+" push Event "+otherCars.length); 
+    }
     /*
     for(i=0; i<roadLines.length; i+=1){
         if(roadLines[i].y >= gameArea.canvas.height){
@@ -66,7 +80,7 @@ function updateGameArea(){
     }*/
 
     for(i=0; i<otherCars.length; i+=1){
-        console.log(otherCars[i].y);
+    //    console.log(otherCars[i].y);
     }
     
 
@@ -161,7 +175,7 @@ function moveUpDown(){
         for(i=0; i<otherCars.length; i+=1){
            otherCars[i].speedY = otherCars[i].speedY +
            (roadLine1.speedY-cacheRoadLine1Speed);
-        //console.log(otherCars[i].speedY);
+       // console.log(otherCars[i].speedY);
 
         }
 }
@@ -234,10 +248,10 @@ function startGame(){
         //roadLines.push(roadLine1);
         //roadLines.push(roadLine2);
 
-        otherCar1 = new Component(50, 75, "blue", gameArea.canvas.width/2,
-            -25);
-        otherCar1.speedY = -1;
-        otherCars.push(otherCar1);
+        //otherCar1 = new Component(50, 75, "blue", gameArea.canvas.width/2,
+        //    -25);
+        //otherCar1.speedY = -1;
+        //otherCars.push(otherCar1);
         gameArea.start();
 
 }
