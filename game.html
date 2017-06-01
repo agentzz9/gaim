@@ -153,13 +153,16 @@ function moveDown(){
     roadLine1.speedY = -1;
 }
 function accelerateUp(){
-        document.getElementById("speed").innerHTML =
-        Math.round(roadLine1.speedY);
-        document.getElementById("speed2").innerHTML
-        =Math.round(Math.cbrt(1/Math.max(roadLine1.speedY,1))); 
+    document.getElementById("speed").innerHTML =
+    Math.round(roadLine1.speedY);
+    document.getElementById("speed2").innerHTML
+         ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1)); 
 
-
-    roadLine1.speedY += Math.cbrt(1/Math.max(roadLine1.speedY,1));
+    roadLine1.speedY = Math.min(
+            (roadLine1.speedY +
+                Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
+            ,50);
+    
 
 }
 function accelerateDown(){
