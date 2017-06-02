@@ -7,11 +7,13 @@ canvas {
 <script src="./Objects.js"></script>
 <script type="text/javascript">
 var PLAYER, goal;
+var speed;
 var otherCars = [];
 var tempCar;
 var leftWall, rightWall;
 var sideline1, sideline2;
 var roadLines = [];
+
 var gameArea = {
 	canvas: document.createElement("canvas"),
 
@@ -57,10 +59,11 @@ function updateGameArea(){
     
         tempCar = new Component(50, 75, "blue", gameArea.canvas.width/2,
             -25);
-       tempCar.speedY = -1; 
+       tempCar.speedY = -10;
+//       tempCar.speedYBias = -1;
        otherCars.push(tempCar);
        if(otherCars.length ==5 ){
-           debugger;
+//           debugger;
        }
 
 
@@ -87,17 +90,15 @@ function updateGameArea(){
     if (gameArea.keys && gameArea.keys[37]) {moveLeft(); }
     if (gameArea.keys && gameArea.keys[39]) {moveRight(); }
     if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]){
-        moveLeftRight();//no left/right reset steer to straight
+        moveLeftRight();
     }
     if (gameArea.keys && gameArea.keys[38]) {
-
         accelerateUp();
     }
     if(gameArea.keys && !gameArea.keys[38]){
         accelerateDown();
     }
     if (gameArea.keys && gameArea.keys[40]) {
-
         accelerateDownBraking();
     }
 
@@ -111,7 +112,11 @@ function updateGameArea(){
 
     roadLine1.newPos();
     roadLine1.update();
+    speed = Math.round(roadLine1.speedY);console.log(speed);
+
+
     for(i=0; i<otherCars.length; i+=1){
+        otherCars[i].speedY = speed-10;
         otherCars[i].newPos();
         otherCars[i].update();
     }
@@ -123,7 +128,7 @@ function updateGameArea(){
     sideline1.update();
     sideline2.newPos();
     sideline2.update();
-
+   
     PLAYER.newPos();
     PLAYER.update();
 
@@ -137,7 +142,7 @@ function moveRight(){
 function moveLeftRight(){
     PLAYER.speedX = 0;
 }
-function moveUp(){
+/*function moveUp(){
     for(i=0; i<roadLines.length; i+=1){
         roadLines[i].speedY  = +1; 
     }
@@ -160,8 +165,8 @@ function moveUpDown(){
         }
         roadLine1.speedY = -1;
     }
-}
- function accelerateUp(){
+}*/
+function accelerateUp(){
         document.getElementById("speed").innerHTML =
         Math.round(roadLine1.speedY);
         document.getElementById("speed2").innerHTML
@@ -173,10 +178,10 @@ function moveUpDown(){
             ,50);
 
         for(i=0; i<otherCars.length; i+=1){
-           otherCars[i].speedY = otherCars[i].speedY +
-           (roadLine1.speedY-cacheRoadLine1Speed);
+       //    otherCars[i].speedY = otherCars[i].speedY +
+      //     (roadLine1.speedY-cacheRoadLine1Speed);
        // console.log(otherCars[i].speedY);
-
+       //     otherCars[i].speedY = roadLine1.speedY + otherCars[i].speedYBias;
         }
 }
     
@@ -196,11 +201,11 @@ function accelerateDown(){
 
 
      for(i=0; i<otherCars.length; i+=1){
-       otherCars[i].speedY = otherCars[i].speedY - (cacheRoadLine1Speed -
-        roadLine1.speedY);
+       //otherCars[i].speedY = otherCars[i].speedY - (cacheRoadLine1Speed -
+       // roadLine1.speedY);
 
         //console.log(otherCars[i].speedY);
-
+       //  otherCars[i].speedY += roadLine1.speedY;
     }
 
     
@@ -219,9 +224,9 @@ function accelerateDownBraking(){
         ,0);
 
     for(i=0; i<otherCars.length; i+=1){
-       otherCars[i].speedY = otherCars[i].speedY - (cacheRoadLine1Speed -
-        roadLine1.speedY);
-
+      // otherCars[i].speedY = otherCars[i].speedY - (cacheRoadLine1Speed -
+      //  roadLine1.speedY);
+//        otherCars[i].speedY += roadLine1.speedY; 
         //console.log(otherCars[i].speedY);
     }
 
