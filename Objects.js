@@ -297,7 +297,9 @@ function PlayerCarComponent(width, height, color, x, y, type) {
 
 }
 function randXonRoad(){
-    return Math.floor((Math.random() * 33) + 34);
+    var perc = Math.floor((Math.random() * 33) + 34);
+    return (perc/100) * gameArea.canvas.width;
+    
 }
 function randSpeed(){
     return Math.floor((Math.random() * 30) + 5);
@@ -316,6 +318,7 @@ function OtherCarComponent(width, height, color, x, y, type) {
     this.width = width;
     this.height = height;
     this.color = color;
+    console.log(x);
     this.x = x;
     this.y = y;
     
@@ -342,12 +345,7 @@ function OtherCarComponent(width, height, color, x, y, type) {
     this.newPos = function() {
         this.x += this.speedX;
         this.y += this.speedY;  
-        if(this.x+this.width > rightWall.x){ 
-            this.x = rightWall.x-this.width;           
-        }
-        if(this.x < leftWall.x + leftWall.width){
-            this.x = leftWall.x + leftWall.width;
-        }
+        
       
     }
     this.crashWith = function(otherobj) {

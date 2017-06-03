@@ -55,11 +55,14 @@ function updateGameArea(){
 	/*detect collisions, win/lose conditions, parse inputs, 
 		trigger random obstacles ?, set speeds of components
        */
-    if(everyinterval(900)){
-    
+    if(everyinterval(500)){
+   /* 
         tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
-
+*/
+    var randXonRoadVar = randXonRoad();
+      tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, 500);
+      
        tempCar.speedY = -1* randSpeed();
        tempCar.speedYInit = tempCar.speedY;
 //       tempCar.speedYBias = -1;
@@ -168,6 +171,7 @@ function moveUpDown(){
         roadLine1.speedY = -1;
     }
 }*/
+        
 function accelerateUp(){
         document.getElementById("speed").innerHTML =
         Math.round(roadLine1.speedY);
