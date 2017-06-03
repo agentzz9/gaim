@@ -57,9 +57,11 @@ function updateGameArea(){
        */
     if(everyinterval(900)){
     
-        tempCar = new Component(50, 75, "blue", gameArea.canvas.width/2,
+        tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
-       tempCar.speedY = -10;
+
+       tempCar.speedY = -1* randSpeed();
+       tempCar.speedYInit = tempCar.speedY;
 //       tempCar.speedYBias = -1;
        otherCars.push(tempCar);
        if(otherCars.length ==5 ){
@@ -112,11 +114,11 @@ function updateGameArea(){
 
     roadLine1.newPos();
     roadLine1.update();
-    speed = Math.round(roadLine1.speedY);console.log(speed);
+    speed = roadLine1.speedY;//console.log(speed);
 
 
     for(i=0; i<otherCars.length; i+=1){
-        otherCars[i].speedY = speed-10;
+        otherCars[i].speedY = speed+otherCars[i].speedYInit;
         otherCars[i].newPos();
         otherCars[i].update();
     }
