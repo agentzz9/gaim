@@ -297,12 +297,12 @@ function PlayerCarComponent(width, height, color, x, y, type) {
 
 }
 function randXonRoad(){
-    var perc = Math.floor((Math.random() * 33) + 34);
+    var perc = Math.floor((Math.random() * 30) + 34);
     return (perc/100) * gameArea.canvas.width;
     
 }
 function randSpeed(){
-    return Math.floor((Math.random() * 30) + 5);
+    return Math.floor((Math.random() *  30) + 5);//5 to 30 pixels
 }
 function OtherCarComponent(width, height, color, x, y, type) {
 
