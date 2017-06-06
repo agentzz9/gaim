@@ -55,17 +55,17 @@ function Component(width, height, color, x, y, type) {
         return crash;
     }
 
-    this.isTouched = function() {
+    this.clicked = function() {
         var myleft = this.x;
         var myright = this.x + (this.width);
         var mytop = this.y;
         var mybottom = this.y + (this.height);
-        var touched = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) //TODO for multi touch checks refactor this.
-         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
-            touched = false;
+        var clicked = true;
+        if ((mybottom < gameArea.y) || (mytop > gameArea.y)
+         || (myright < gameArea.x) || (myleft > gameArea.x)) {
+            clicked = false;
         }
-        return touched;
+        return clicked;
     }
 
 }
@@ -234,6 +234,7 @@ function PlayerCarComponent(width, height, color, x, y, type) {
     this.color = color;
     this.x = x;
     this.y = y;
+    this.distanceTravelled  = 0;
     
     this.speedX = 0;
     this.speedY = 0;
