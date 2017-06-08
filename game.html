@@ -14,24 +14,26 @@ var tempCar;
 var leftWall, rightWall;
 var sideline1, sideline2;
 var roadLines = [];
+var startButton;
 var gameArea = {
 	canvas: document.createElement("canvas"),
-    prestart :function(){
+    prestart : function() {
         this.canvas.width = 1320;
         this.canvas.height = 600;
         this.canvas.style = "background-color:#404142";
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
         window.addEventListener('mousedown', function (e) {
             gameArea.x = e.pageX;
             gameArea.y = e.pageY;
-            renderStartPage();   
+            
         })
         window.addEventListener('mouseup', function (e) {
             gameArea.x = false;
             gameArea.y = false;
         })
-        renderStartPage();
+        this.interval = setInterval(updatePreGameArea, 20);
     },
     start : function() {
         this.canvas.width = 1320;
@@ -41,7 +43,7 @@ var gameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         window.addEventListener('keydown', function (e) {
-            e.preventDefault();//prevent scroll of window :(
+                e.preventDefault();//prevent scroll of window :(
                 gameArea.keys = (gameArea.keys || []);
                 gameArea.keys[e.keyCode] = true;
             })
@@ -59,21 +61,29 @@ var gameArea = {
         clearInterval(this.interval);
     }
 }
-function renderStartPage(){
-   var startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
-   startButton.text = "start";
-   startButton.update(); 
-   if(startButton.clicked()){
-    gameArea.start();
-   }
 
-}
 function everyinterval(n) {
     if ((gameArea.frameNo / n) % 1 == 0) {return true;}
     return false;
 }
 
+function updatePreGameArea(){
 
+    
+    gameArea.clear();
+    gameArea.frameNo += 1;
+
+    if(gameArea.x && gameArea.y){
+        //debugger;
+        if( startButton.isClicked() ){
+            gameArea.stop();
+            startGame();
+        }
+    }
+    startButton.newPos();
+    startButton.update();
+
+}
 function updateGameArea(){
 
 	/*detect collisions, win/lose conditions, parse inputs, 
@@ -84,16 +94,14 @@ function updateGameArea(){
         tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
 */
-    var randXonRoadVar = randXonRoad();
-      tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, 500);
+        var randXonRoadVar = randXonRoad();
+        tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, 500);
       
-       tempCar.speedY = -1* randSpeed();
-       tempCar.speedYInit = tempCar.speedY;
+        tempCar.speedY = -1* randSpeed();
+        tempCar.speedYInit = tempCar.speedY;
 //       tempCar.speedYBias = -1;
-       otherCars.push(tempCar);
-
-      
-   //console.log(otherCars[otherCars.length-1].speedY+" push Event "+otherCars.length); 
+        otherCars.push(tempCar);
+        //console.log(otherCars[otherCars.length-1].speedY+" push Event "+otherCars.length); 
     }
     /*
     for(i=0; i<roadLines.length; i+=1){
@@ -113,7 +121,6 @@ function updateGameArea(){
     }*/
     //console.log(otherCars.length);
     
-
     if (gameArea.keys && gameArea.keys[37]) {moveLeft(); }
     if (gameArea.keys && gameArea.keys[39]) {moveRight(); }
     if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]){
@@ -129,19 +136,17 @@ function updateGameArea(){
         accelerateDownBraking();
     }
 
-
     gameArea.clear();
     gameArea.frameNo += 1;
 	//console.log(gameArea.frameNo);
 	/*
 	update components.redraw frame
 	*/
-
     roadLine1.newPos();
     roadLine1.update();
     speed = roadLine1.speedY;//console.log(speed);
     dist += speed;
-    console.log(dist);
+    //console.log(dist);
    
     for(i=0; i<otherCars.length; i+=1){
         otherCars[i].speedY = speed+otherCars[i].speedYInit;
@@ -206,11 +211,7 @@ function accelerateUp(){
                 Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
             ,50);
 
-        
 }
-    
-
-
 function accelerateDown(){
 
     document.getElementById("speed").innerHTML =
@@ -222,11 +223,6 @@ function accelerateDown(){
         (roadLine1.speedY -
             Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
         ,0);
-
-
-    
-
-    
 }
 function accelerateDownBraking(){
 
@@ -241,14 +237,16 @@ function accelerateDownBraking(){
             Math.cbrt(1/(100*Math.max(roadLine1.speedY,1))))
         ,0);
 
-    
+}
+function preStartGame(){
 
-
+    startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
+    startButton.text = "start";
+    gameArea.prestart();
 }
 function startGame(){
 	
 	//initialize objects,
-    //	PLAYER  = new Component(216/3, 490/3, "car", 10, 10, "image");
     PLAYER  = new PlayerCarComponent(216/3, 490/3, "red", gameArea.canvas.width/2 ,
         gameArea.canvas.height*0.70);
 
@@ -262,23 +260,14 @@ function startGame(){
         (gameArea.canvas.width*.67)-21,-10);
     roadLine1 = new RoadlineComponent(15, 100, "white",
         (gameArea.canvas.width*.5)-6,-100);
-        //roadLine2 = new Component(15, 100, "white", (gameArea.canvas.width*.5)-6,500);
-        //roadLines.push(roadLine1);
-        //roadLines.push(roadLine2);
-
-        //otherCar1 = new Component(50, 75, "blue", gameArea.canvas.width/2,
-        //    -25);
-        //otherCar1.speedY = -1;
-        //otherCars.push(otherCar1);
+    
         gameArea.start();
 
 }
 function stopGame(){
 	gameArea.stop();
 }
-function preStartGame(){
-    gameArea.prestart();
-}
+
 </script>
 <button onclick="preStartGame()">prestartgame</button>
 <button onclick="startGame()">startgame</button>
