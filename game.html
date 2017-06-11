@@ -14,7 +14,9 @@ var tempCar;
 var leftWall, rightWall;
 var sideline1, sideline2;
 var roadLines = [];
+var speedText;
 var startButton;
+var speedValueText;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -145,14 +147,11 @@ function updateGameArea(){
     roadLine1.newPos();
     roadLine1.update();
     speed = roadLine1.speedY;//console.log(speed);
+    speedValueText.text = ""+speed;
     dist += speed;
     //console.log(dist);
    
-    for(i=0; i<otherCars.length; i+=1){
-        otherCars[i].speedY = speed+otherCars[i].speedYInit;
-        otherCars[i].newPos();
-        otherCars[i].update();
-    }
+    
     leftWall.newPos();
     leftWall.update();
     rightWall.newPos();
@@ -161,7 +160,16 @@ function updateGameArea(){
     sideline1.update();
     sideline2.newPos();
     sideline2.update();
-   
+    speedText.newPos();
+    speedText.update();
+    speedValueText.newPos();
+    speedValueText.update();
+
+    for(i=0; i<otherCars.length; i+=1){
+        otherCars[i].speedY = speed+otherCars[i].speedYInit;
+        otherCars[i].newPos();
+        otherCars[i].update();
+    } 
     PLAYER.newPos();
     PLAYER.update();
 
@@ -260,8 +268,11 @@ function startGame(){
         (gameArea.canvas.width*.67)-21,-10);
     roadLine1 = new RoadlineComponent(15, 100, "white",
         (gameArea.canvas.width*.5)-6,-100);
-    
-        gameArea.start();
+    speedText = new Component("30px", "Consolas", "blue", gameArea.canvas.width*.70, 30, "text");
+    speedText.text = "Speed :";
+    speedValueText = new SpeedValueComponent("30px", "Consolas", "blue", gameArea.canvas.width*.80, 30, "text", 20);
+    speedValueText.text = ""+speed; 
+    gameArea.start();
 
 }
 function stopGame(){
@@ -274,6 +285,7 @@ function stopGame(){
 <button onclick="stopGame()">stopgame</button>
 <span id="speed"></span><span id="speed2"></span>
 <img hidden id="car" src="carimage.png"/>
+<img hidden id="speedoimage" src="masdash.png"/>
 
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
