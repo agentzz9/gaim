@@ -220,19 +220,7 @@ function PlayerCarComponent(width, height, color, x, y, type) {
         return crash;
     }
 
-    this.isTouched = function() {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var touched = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) //TODO for multi touch checks refactor this.
-         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
-            touched = false;
-        }
-        return touched;
-    }
-
+    
 }
 function randXonRoad(){
     var perc = Math.floor((Math.random() * 30) + 34);

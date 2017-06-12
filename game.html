@@ -66,6 +66,15 @@ var gameArea = {
         clearInterval(this.interval);
     }
 }
+/*following two lines needed to correct a false start with incorrect width and
+  height, which made me invoke startgame again, which messed up the
+  gameinterval, (2 intervals..... on stop only the latest stops... not the
+  first one.... it goes on for eternity, side effect apparantly higher
+  framerate bah humbug ?!*/
+gameArea.canvas.width = 1320;
+gameArea.canvas.height = 600;
+
+
 
 function everyinterval(n) {
     if ((gameArea.frameNo / n) % 1 == 0) {return true;}
@@ -94,13 +103,21 @@ function updateGameArea(){
 	/*detect collisions, win/lose conditions, parse inputs, 
 		trigger random obstacles ?, set speeds of components
        */
+    for(i=0; i< otherCars.length; i++){
+        if(PLAYER.crashWith(otherCars[i])){
+            console.log("crashed with "+i);
+            //gameArea.stop();
+
+        
+        }
+    }
     if(everyinterval(500)){
    /* 
         tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
 */
         var randXonRoadVar = randXonRoad();
-        tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, 500);
+        tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, -1000);
       
         tempCar.speedY = -1* randSpeed();
         tempCar.speedYInit = tempCar.speedY;
@@ -260,7 +277,9 @@ function preStartGame(){
     gameArea.prestart();
 }
 function startGame(){
-	
+	/*
+        
+        */
 	//initialize objects,
     PLAYER  = new PlayerCarComponent(216/3, 490/3, "red", gameArea.canvas.width/2 ,
         gameArea.canvas.height*0.70);
