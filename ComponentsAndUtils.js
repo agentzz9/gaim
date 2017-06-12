@@ -25,7 +25,7 @@ function Component(width, height, color, x, y, type) {
         	this.width, this.height);
    		}else if (this.type == "text") {
             ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
+            ctx.fillStyle = this.color;
             ctx.fillText(this.text, this.x, this.y);
         } else { //rect
             ctx.fillStyle = color;
@@ -347,9 +347,18 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
             if(Number.parseFloat(this.text) >= Number.parseFloat(speedLimit) )
              {
               ctx.fillStyle = "red";
+            
+                 spectatorMessage.color = "red";
+
+ 
+              spectatorMessage.text = "spec message string...this long... will nee do see!";
+
             }
            else{
               ctx.fillStyle = "blue";
+                spectatorMessage.color = "black";
+
+               spectatorMessage.text = "";
               }
             ctx.fillText(this.text, this.x, this.y);
         } else { //rect

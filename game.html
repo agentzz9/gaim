@@ -17,6 +17,9 @@ var roadLines = [];
 var speedText;
 var startButton;
 var speedValueText;
+var spectatorImage;
+var spectatorMessage;
+
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -164,7 +167,10 @@ function updateGameArea(){
     speedText.update();
     speedValueText.newPos();
     speedValueText.update();
-
+    spectatorImage.newPos();
+    spectatorImage.update();
+    spectatorMessage.newPos();
+    spectatorMessage.update();
     for(i=0; i<otherCars.length; i+=1){
         otherCars[i].speedY = speed+otherCars[i].speedYInit;
         otherCars[i].newPos();
@@ -272,6 +278,12 @@ function startGame(){
     speedText.text = "Speed :";
     speedValueText = new SpeedValueComponent("30px", "Consolas", "blue", gameArea.canvas.width*.80, 30, "text", 20);
     speedValueText.text = ""+speed; 
+    spectatorImage = new Component(200,
+            200,"spectatorimage",gameArea.canvas.width*.10, 40,"image"  );
+    spectatorMessage = new Component("25px", "Consolas", "black",
+            gameArea.canvas.width*.025,
+            20+spectatorImage.y+spectatorImage.width,"text");
+    spectatorMessage.text = "";
     gameArea.start();
 
 }
@@ -286,6 +298,7 @@ function stopGame(){
 <span id="speed"></span><span id="speed2"></span>
 <img hidden id="car" src="carimage.png"/>
 <img hidden id="speedoimage" src="masdash.png"/>
+<img hidden id="spectatorimage" src="spectatorimage.png"/>
 
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
