@@ -148,7 +148,7 @@ function RoadlineComponent(width, height, color, x, y, type) {
         var mytop = this.y;
         var mybottom = this.y + (this.height);
         var touched = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) //TODO for multi touch checks refactor this.
+        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y)//TODO for multi touch checks refactor this.
          || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
             touched = false;
         }
@@ -244,6 +244,7 @@ function OtherCarComponent(width, height, color, x, y, type) {
     this.width = width;
     this.height = height;
     this.color = color;
+    this.destroyed = false;
     
     this.x = x;
     this.y = y;
@@ -254,7 +255,7 @@ function OtherCarComponent(width, height, color, x, y, type) {
 
     this.update = function() {
         ctx = gameArea.context;
-        if (type == "image") {
+        if (this.type == "image") {
             ctx.drawImage(this.image, 
             this.x, 
             this.y,
@@ -302,6 +303,18 @@ function OtherCarComponent(width, height, color, x, y, type) {
         }
         return touched;
     }
+    this.explode = function(){
+        console.log(this+" Exploded");
+        this.destroyed = true;
+        this.type = "image";
+        this.color = "fireimage";
+        this.width = 200;
+        this.height = 200;
+        this.speedY = 0;
+        this.speedYInit = 0;
+        this.image = document.getElementById(this.color);
+        
+    }
 
 }
 function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
@@ -338,14 +351,17 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
             
                  spectatorMessage.color = "red";
 
- 
+
+                spectatorImage.color = "spectatorscared";
+                spectatorImage.image = document.getElementById(spectatorImage.color);
               spectatorMessage.text = "spec message string...this long... will nee do see!";
 
             }
            else{
               ctx.fillStyle = "blue";
                 spectatorMessage.color = "black";
-
+               spectatorImage.color = "spectatorimage";
+                spectatorImage.image = document.getElementById(spectatorImage.color);
                spectatorMessage.text = "";
               }
             ctx.fillText(this.text, this.x, this.y);

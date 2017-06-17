@@ -105,11 +105,17 @@ function updateGameArea(){
        */
     for(i=0; i< otherCars.length; i++){
         if(PLAYER.crashWith(otherCars[i])){
-            console.log("crashed with "+i);
+            otherCars[i].explode();
+
             //gameArea.stop();
 
         
         }
+        if(otherCars[i].y>600){
+            //garbageCollect cars passed... TODO
+
+        }
+
     }
     if(everyinterval(500)){
    /* 
@@ -117,7 +123,7 @@ function updateGameArea(){
             -25);
 */
         var randXonRoadVar = randXonRoad();
-        tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, -1000);
+        tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, -1500);
       
         tempCar.speedY = -1* randSpeed();
         tempCar.speedYInit = tempCar.speedY;
@@ -240,7 +246,7 @@ function accelerateUp(){
         var cacheRoadLine1Speed = roadLine1.speedY;
         roadLine1.speedY = Math.min(
             (roadLine1.speedY +
-                Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
+                Math.cbrt(1/(1000*Math.max(roadLine1.speedY,1))))
             ,50);
 
 }
@@ -253,7 +259,7 @@ function accelerateDown(){
      var cacheRoadLine1Speed = roadLine1.speedY;
      roadLine1.speedY = Math.max(
         (roadLine1.speedY -
-            Math.cbrt(1/(10000*Math.max(roadLine1.speedY,1))))
+            Math.cbrt(1/(1000*Math.max(roadLine1.speedY,1))))
         ,0);
 }
 function accelerateDownBraking(){
@@ -319,7 +325,9 @@ function stopGame(){
 <img hidden id="car" src="carimage.png"/>
 <img hidden id="speedoimage" src="masdash.png"/>
 <img hidden id="spectatorimage" src="spectatorimage.png"/>
-
+<img hidden id="spectatorscared" src="spectatorscared.png"/><!--404 for now
+TODO-->
+<img hidden id="fireimage" src="spark.gif"/>
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
 <img hidden id="leftarrow" src="leftarrow.png"/>
