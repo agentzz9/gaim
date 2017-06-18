@@ -6,9 +6,11 @@ canvas {
 </style></head><body></body>
 <script src="./ComponentsAndUtils.js"></script>
 <script type="text/javascript">
-var PLAYER, goal;
+var PLAYER;
+var goalDistance = 200000;
 var speed;
 var dist = 0;
+var prevDist = -1;
 var otherCars = [];
 var tempCar;
 var leftWall, rightWall;
@@ -19,7 +21,16 @@ var startButton;
 var speedValueText;
 var spectatorImage;
 var spectatorMessage;
-
+var startIcon;
+var endIcon;
+var startIconText; 
+var endIconText;
+var progressBackgroundStrip;
+var playerIcon;
+var wonText;
+var lostText;
+var collisionCount = 0;
+var healthPoints = 3;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -29,15 +40,16 @@ var gameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
-        window.addEventListener('mousedown', function (e) {
-            gameArea.x = e.pageX;
-            gameArea.y = e.pageY;
-            
+         window.addEventListener('keydown', function (e) {
+                e.preventDefault();//prevent scroll of window :(
+                gameArea.keys = (gameArea.keys || []);
+                gameArea.keys[e.keyCode] = true;
+                //console.log(e.keyCode);
+            })
+        window.addEventListener('keyup', function (e) {
+            gameArea.keys[e.keyCode] = false; 
         })
-        window.addEventListener('mouseup', function (e) {
-            gameArea.x = false;
-            gameArea.y = false;
-        })
+           
         this.interval = setInterval(updatePreGameArea, 20);
     },
     start : function() {
@@ -86,14 +98,18 @@ function updatePreGameArea(){
     
     gameArea.clear();
     gameArea.frameNo += 1;
+    if (gameArea.keys && gameArea.keys[83]) {
+        gameArea.stop();
+        startGame();
+    }
 
-    if(gameArea.x && gameArea.y){
+    /*if(gameArea.x && gameArea.y){
         //debugger;
         if( startButton.isClicked() ){
             gameArea.stop();
             startGame();
         }
-    }
+    }*/
     startButton.newPos();
     startButton.update();
 
@@ -103,6 +119,11 @@ function updateGameArea(){
 	/*detect collisions, win/lose conditions, parse inputs, 
 		trigger random obstacles ?, set speeds of components
        */
+    if(dist >= goalDistance){
+        console.log("Winner");
+        stopGame();
+    }
+
     for(i=0; i< otherCars.length; i++){
         if(PLAYER.crashWith(otherCars[i])){
             otherCars[i].explode();
@@ -117,7 +138,7 @@ function updateGameArea(){
         }
 
     }
-    if(everyinterval(500)){
+    if(everyinterval(400)){
    /* 
         tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
@@ -175,10 +196,10 @@ function updateGameArea(){
     roadLine1.update();
     speed = roadLine1.speedY;//console.log(speed);
     speedValueText.text = ""+speed;
+    prevDist = dist;
     dist += speed;
-    //console.log(dist);
+    console.log(dist);
    
-    
     leftWall.newPos();
     leftWall.update();
     rightWall.newPos();
@@ -195,6 +216,19 @@ function updateGameArea(){
     spectatorImage.update();
     spectatorMessage.newPos();
     spectatorMessage.update();
+    progressBackgroundStrip.newPos();
+    progressBackgroundStrip.update();
+
+    startIcon.newPos();
+    startIcon.update();
+    startIconText.newPos();
+    startIconText.update();
+    endIcon.newPos();
+    endIcon.update();
+    endIconText.newPos();
+    endIconText.update();
+    playerIcon.newPos();
+    playerIcon.update();
     for(i=0; i<otherCars.length; i+=1){
         otherCars[i].speedY = speed+otherCars[i].speedYInit;
         otherCars[i].newPos();
@@ -279,7 +313,7 @@ function accelerateDownBraking(){
 function preStartGame(){
 
     startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
-    startButton.text = "start";
+    startButton.text = "Press 's' key to start";
     gameArea.prestart();
 }
 function startGame(){
@@ -310,6 +344,23 @@ function startGame(){
             gameArea.canvas.width*.025,
             20+spectatorImage.y+spectatorImage.width,"text");
     spectatorMessage.text = "";
+
+    startIcon = new Component(100, 100, "starticon", gameArea.canvas.width*.70,
+            480,"image");
+    startIconText = new Component("25px", "Consolas", "orange",
+        gameArea.canvas.width*.80,500, "text");
+    startIconText.text = "home";
+    endIcon = new Component(100, 100, "endicon", gameArea.canvas.width*.70,
+        60, "image");
+    endIconText = new Component("25px", "Consolas", "yellow",
+        gameArea.canvas.width*.80,80, "text");
+    endIconText.text = "Destination";
+
+    progressBackgroundStrip = new Component(30, 400, "black",
+            gameArea.canvas.width*.75, 80);
+    playerIcon = new PlayerIconComponent(80,80,
+    "playericon",gameArea.canvas.width*.72,480,
+            "image");    
     gameArea.start();
 
 }
@@ -325,9 +376,11 @@ function stopGame(){
 <img hidden id="car" src="carimage.png"/>
 <img hidden id="speedoimage" src="masdash.png"/>
 <img hidden id="spectatorimage" src="spectatorimage.png"/>
-<img hidden id="spectatorscared" src="spectatorscared.png"/><!--404 for now
-TODO-->
+<img hidden id="spectatorscared" src="spectatorscared.png"/>
 <img hidden id="fireimage" src="spark.gif"/>
+<img hidden id="starticon" src="starticon.png"/>
+<img hidden id="endicon" src="endicon.png"/>
+<img hidden id="playericon" src="playericon.png"/>
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
 <img hidden id="leftarrow" src="leftarrow.png"/>

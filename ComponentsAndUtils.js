@@ -304,7 +304,6 @@ function OtherCarComponent(width, height, color, x, y, type) {
         return touched;
     }
     this.explode = function(){
-        console.log(this+" Exploded");
         this.destroyed = true;
         this.type = "image";
         this.color = "fireimage";
@@ -423,3 +422,96 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
         }
     }
 }
+function PlayerIconComponent(width, height, color, x, y, type) {
+
+	this.type = type;
+	if (type == "image") {
+    	//this.image = new Image();
+    	//this.image.src = color;//take from profile? camera ?
+    	//above code snippet giving issues apparently the image has to be already loaded:(
+  		this.image = document.getElementById(color);
+    }
+    this.width = width;
+	this.height = height;
+	this.color = color;
+	this.x = x;
+	this.y = y;
+	
+    this.speedX = 0;
+	this.speedY = 0;
+
+	this.update = function() {
+        ctx = gameArea.context;
+        if (type == "image") {
+
+      		ctx.drawImage(this.image, 
+        	this.x, 
+        	this.y,
+        	this.width, this.height);
+   		}else if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = this.color;
+            ctx.fillText(this.text, this.x, this.y);
+        } else { //rect
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+	this.newPos = function() {
+        
+        if(prevDist != dist){
+            var deltaY = (dist/goalDistance) * (startIcon.y - endIcon.y);
+        this.y = (-deltaY) + startIcon.y;
+
+
+        }
+
+        this.x += this.speedX;
+        this.y += this.speedY;        
+    }
+	this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+    this.isClicked = function() {
+
+        if(type == "text"){
+            var tempWidth = gameArea.context.measureText(this.text).width;
+            var tempHeight = gameArea.context.measureText(this.text).height;//doesnt work. hheight alternate approach needed 
+            var myleft = this.x;
+            var myright = this.x + (tempWidth);
+            var mytop = this.y;
+            var mybottom = this.y + (tempHeight);
+            var wasIclicked = true;
+            if ((mybottom < gameArea.y) || (mytop > gameArea.y)
+             || (myright < gameArea.x) || (myleft > gameArea.x)) {
+                wasIclicked = false;
+            }
+            return wasIclicked;
+
+        }else{
+            var myleft = this.x;
+            var myright = this.x + (this.width);
+            var mytop = this.y;
+            var mybottom = this.y + (this.height);
+            var wasIclicked = true;
+            if ((mybottom < gameArea.y) || (mytop > gameArea.y)
+             || (myright < gameArea.x) || (myleft > gameArea.x)) {
+                wasIclicked = false;
+            }
+            return wasIclicked;
+        }
+    }
+}
+
