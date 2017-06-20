@@ -29,8 +29,8 @@ var progressBackgroundStrip;
 var playerIcon;
 var wonText;
 var lostText;
-var collisionCount = 0;
-var healthPoints = 3;
+var healthPoints = 100;
+var healthBar;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -126,8 +126,17 @@ function updateGameArea(){
 
     for(i=0; i< otherCars.length; i++){
         if(PLAYER.crashWith(otherCars[i])){
+            if(!otherCars[i].destroyed){
+            
+                healthBar.width -= 10;
+            }
             otherCars[i].explode();
-
+            console.log(healthBar.width);
+            if(healthBar.width == 0)
+            {
+                console.log("Lost");
+                stopGame();
+            }
             //gameArea.stop();
 
         
@@ -198,7 +207,7 @@ function updateGameArea(){
     speedValueText.text = ""+speed;
     prevDist = dist;
     dist += speed;
-    console.log(dist);
+    //console.log(dist);
    
     leftWall.newPos();
     leftWall.update();
@@ -229,6 +238,8 @@ function updateGameArea(){
     endIconText.update();
     playerIcon.newPos();
     playerIcon.update();
+    healthBar.newPos();
+    healthBar.update();
     for(i=0; i<otherCars.length; i+=1){
         otherCars[i].speedY = speed+otherCars[i].speedYInit;
         otherCars[i].newPos();
@@ -361,6 +372,9 @@ function startGame(){
     playerIcon = new PlayerIconComponent(80,80,
     "playericon",gameArea.canvas.width*.72,480,
             "image");    
+
+    healthBar = new Component(healthPoints, 10,"black",gameArea.canvas.width*.10,
+            gameArea.canvas.height*.70); 
     gameArea.start();
 
 }
