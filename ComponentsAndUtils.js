@@ -223,7 +223,7 @@ function PlayerCarComponent(width, height, color, x, y, type) {
     
 }
 function randXonRoad(){
-    var perc = Math.floor((Math.random() * 30) + 34);
+    var perc = Math.floor((Math.random() * 30) + 32);
     return (perc/100) * gameArea.canvas.width;
     
 }
@@ -237,7 +237,10 @@ function OtherCarComponent(width, height, color, x, y, type) {
         //this.image = new Image();
         //this.image.src = color;//take from profile? camera ?
         //above code snippet giving issues apparently the image has to be already loaded:(
-        this.image = document.getElementById(color);
+        //
+        var rand1t6 = Math.floor((Math.random()*6)+1);
+
+        this.image = document.getElementById(color+rand1t6);
 
     }
 
@@ -307,7 +310,7 @@ function OtherCarComponent(width, height, color, x, y, type) {
         this.destroyed = true;
         this.type = "image";
         this.color = "fireimage";
-        this.width = 200;
+        this.width = 220;
         this.height = 200;
         this.speedY = 0;
         this.speedYInit = 0;

@@ -7,7 +7,7 @@ canvas {
 <script src="./ComponentsAndUtils.js"></script>
 <script type="text/javascript">
 var PLAYER;
-var goalDistance = 20000;
+var goalDistance = 200000;
 var speed;
 var dist = 0;
 var prevDist = -1;
@@ -195,13 +195,14 @@ function updateGameArea(){
         }
 
     }
-    if(everyinterval(400)){
+    if(everyinterval(100)){
    /* 
         tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
 */
         var randXonRoadVar = randXonRoad();
-        tempCar = new OtherCarComponent(50, 75, "blue", randXonRoadVar, -1500);
+        tempCar = new OtherCarComponent(90, 120, "othercar", randXonRoadVar,
+                -1500, "image");
       
         tempCar.speedY = -1* randSpeed();
         tempCar.speedYInit = tempCar.speedY;
@@ -464,6 +465,17 @@ window.onload = preStartGame;
 <img hidden id="starticon" src="starticon.png"/>
 <img hidden id="endicon" src="endicon.png"/>
 <img hidden id="playericon" src="playericon.png"/>
+<img hidden id="othercar1" src="othercar1.png"/>
+<img hidden id="othercar2" src="othercar2.png"/>
+<img hidden id="othercar3" src="othercar3.png"/>
+<img hidden id="othercar4" src="othercar4.png"/>
+<img hidden id="othercar5" src="othercar5.png"/>
+<img hidden id="othercar6" src="othercar6.png"/>
+
+
+
+
+
 
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
