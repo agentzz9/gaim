@@ -7,7 +7,7 @@ canvas {
 <script src="./ComponentsAndUtils.js"></script>
 <script type="text/javascript">
 var PLAYER;
-var goalDistance = 200000;
+var goalDistance = 20000;
 var speed;
 var dist = 0;
 var prevDist = -1;
@@ -40,7 +40,7 @@ var gameArea = {
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
-         window.addEventListener('keydown', function (e) {
+        window.addEventListener('keydown', function (e) {
                 e.preventDefault();//prevent scroll of window :(
                 gameArea.keys = (gameArea.keys || []);
                 gameArea.keys[e.keyCode] = true;
@@ -51,6 +51,27 @@ var gameArea = {
         })
            
         this.interval = setInterval(updatePreGameArea, 20);
+    },
+    poststart : function() {
+        this.canvas.width = 1320;
+        this.canvas.height = 600;
+        this.canvas.style = "background-color:#404142";
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        window.addEventListener('keydown', function (e) {
+                e.preventDefault();//prevent scroll of window :(
+                gameArea.keys = (gameArea.keys || []);
+                gameArea.keys[e.keyCode] = true;
+                //console.log(e.keyCode);
+            })
+        window.addEventListener('keyup', function (e) {
+            gameArea.keys[e.keyCode] = false; 
+        })
+
+        this.interval = setInterval(updatePostGameArea, 20);
+
+
     },
     start : function() {
         this.canvas.width = 1320;
@@ -114,6 +135,18 @@ function updatePreGameArea(){
     startButton.update();
 
 }
+function updatePostGameArea(){
+
+    gameArea.clear();
+    gameArea.frameNo +=1;
+    if(gameArea.keys && gameArea.keys[83]){//TODO
+        gameArea.stop();
+        stopGame();
+    
+    }
+    startButton.newPos();
+    startButton.update();
+}
 function updateGameArea(){
 
 	/*detect collisions, win/lose conditions, parse inputs, 
@@ -121,7 +154,11 @@ function updateGameArea(){
        */
     if(dist >= goalDistance){
         console.log("Winner");
+        
         stopGame();
+        alert("Winner!");
+
+        postGame();
     }
 
     for(i=0; i< otherCars.length; i++){
@@ -135,7 +172,11 @@ function updateGameArea(){
             if(healthBar.width == 0)
             {
                 console.log("Lost");
+                 
                 stopGame();
+                alert("You Lost");
+                location.reload();
+            
             }
             //gameArea.stop();
 
@@ -327,6 +368,13 @@ function preStartGame(){
     startButton.text = "Press 's' key to start";
     gameArea.prestart();
 }
+function postGame(){
+    startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
+    startButton.text = "winning message";
+    gameArea.poststart();
+
+
+}
 function startGame(){
 	/*
         
@@ -386,6 +434,7 @@ function stopGame(){
 <button onclick="preStartGame()">prestartgame</button>
 <button onclick="startGame()">startgame</button>
 <button onclick="stopGame()">stopgame</button>
+<button onclick="postGame()">postgame</button>
 <span id="speed"></span><span id="speed2"></span>
 <img hidden id="car" src="carimage.png"/>
 <img hidden id="speedoimage" src="masdash.png"/>
