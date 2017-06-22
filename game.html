@@ -179,7 +179,8 @@ function updateGameArea(){
             if(healthBar.width == 0)
             {
                 console.log("Lost");
-                 
+                otherCars[i].newPos();
+                otherCars[i].update();//trying to force show explosion here
                 stopGame();
                 alert("You Lost");
                 location.reload();
@@ -399,9 +400,9 @@ function startGame(){
     PLAYER  = new PlayerCarComponent(216/2, 490/2, "car", gameArea.canvas.width/2 ,
         gameArea.canvas.height*0.59, "image");
 
-    leftWall = new Component(gameArea.canvas.width*.33, 2000, "green", 0, -10);
+    leftWall = new Component(gameArea.canvas.width*.33, 2000, "#60ea10", 0, -10);
 
-    rightWall = new Component(gameArea.canvas.width*.33, 2000, "green",
+    rightWall = new Component(gameArea.canvas.width*.33, 2000, "#60ea10",
         gameArea.canvas.width*.67, -10);
     sideline1 = new Component(15, 3000, "white", (gameArea.canvas.width*.33)+6,
         -10);
@@ -409,9 +410,9 @@ function startGame(){
         (gameArea.canvas.width*.67)-21,-10);
     roadLine1 = new RoadlineComponent(15, 100, "white",
         (gameArea.canvas.width*.5)-6,-100);
-    speedText = new Component("30px", "Consolas", "blue", gameArea.canvas.width*.70, 30, "text");
+    speedText = new Component("30px", "Consolas", "#0bc4a7", gameArea.canvas.width*.70, 30, "text");
     speedText.text = "Speed :";
-    speedValueText = new SpeedValueComponent("30px", "Consolas", "blue", gameArea.canvas.width*.80, 30, "text", 20);
+    speedValueText = new SpeedValueComponent("30px", "Consolas", "#0bc4a7", gameArea.canvas.width*.80, 30, "text", 20);
     speedValueText.text = ""+speed; 
     spectatorImage = new Component(200,
             200,"spectatorimage",gameArea.canvas.width*.10, 40,"image"  );
@@ -422,22 +423,22 @@ function startGame(){
 
     startIcon = new Component(100, 100, "starticon", gameArea.canvas.width*.70,
             480,"image");
-    startIconText = new Component("25px", "Consolas", "orange",
+    startIconText = new Component("25px", "Consolas", "#396c2b",
         gameArea.canvas.width*.80,500, "text");
     startIconText.text = "home";
     endIcon = new Component(100, 100, "endicon", gameArea.canvas.width*.70,
         60, "image");
-    endIconText = new Component("25px", "Consolas", "yellow",
+    endIconText = new Component("25px", "Consolas", "#396c2b",
         gameArea.canvas.width*.80,80, "text");
     endIconText.text = "Destination";
 
-    progressBackgroundStrip = new Component(30, 400, "black",
+    progressBackgroundStrip = new Component(30, 400, "#865521",
             gameArea.canvas.width*.75, 80);
     playerIcon = new PlayerIconComponent(80,80,
     "playericon",gameArea.canvas.width*.72,480,
             "image");    
 
-    healthBar = new Component(healthPoints, 30,"black",gameArea.canvas.width*.20,
+    healthBar = new Component(healthPoints, 30,"#8c0000",gameArea.canvas.width*.20,
             gameArea.canvas.height*.86); 
 
     healthText = new Component("18px", "consolas", "blue",

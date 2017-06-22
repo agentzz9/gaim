@@ -294,18 +294,7 @@ function OtherCarComponent(width, height, color, x, y, type) {
         return crash;
     }
 
-    this.isTouched = function() {
-        var myleft = this.x;
-        var myright = this.x + (this.width);
-        var mytop = this.y;
-        var mybottom = this.y + (this.height);
-        var touched = true;
-        if ((mybottom < myGameArea.y) || (mytop > myGameArea.y) //TODO for multi touch checks refactor this.
-         || (myright < myGameArea.x) || (myleft > myGameArea.x)) {
-            touched = false;
-        }
-        return touched;
-    }
+    
     this.explode = function(){
         this.destroyed = true;
         this.type = "image";
@@ -360,7 +349,7 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
 
             }
            else{
-              ctx.fillStyle = "blue";
+              ctx.fillStyle = "#0bc4a7";
                 spectatorMessage.color = "black";
                spectatorImage.color = "spectatorimage";
                 spectatorImage.image = document.getElementById(spectatorImage.color);
