@@ -31,6 +31,7 @@ var wonText;
 var lostText;
 var healthPoints = 100;
 var healthBar;
+var healthText;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -281,6 +282,8 @@ function updateGameArea(){
     playerIcon.update();
     healthBar.newPos();
     healthBar.update();
+    healthText.newPos();
+    healthText.update(); 
     for(i=0; i<otherCars.length; i+=1){
         otherCars[i].speedY = speed+otherCars[i].speedYInit;
         otherCars[i].newPos();
@@ -421,15 +424,20 @@ function startGame(){
     "playericon",gameArea.canvas.width*.72,480,
             "image");    
 
-    healthBar = new Component(healthPoints, 30,"black",gameArea.canvas.width*.10,
-            gameArea.canvas.height*.70); 
+    healthBar = new Component(healthPoints, 30,"black",gameArea.canvas.width*.20,
+            gameArea.canvas.height*.86); 
+
+    healthText = new Component("18px", "consolas", "blue",
+            gameArea.canvas.width*.20, gameArea.canvas.height*.83, "text");
+    healthText.text = "Car Health:";
+
     gameArea.start();
 
 }
 function stopGame(){
 	gameArea.stop();
 }
-
+window.onload = preStartGame;
 </script>
 <button onclick="preStartGame()">prestartgame</button>
 <button onclick="startGame()">startgame</button>
@@ -444,6 +452,7 @@ function stopGame(){
 <img hidden id="starticon" src="starticon.png"/>
 <img hidden id="endicon" src="endicon.png"/>
 <img hidden id="playericon" src="playericon.png"/>
+
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
 <img hidden id="leftarrow" src="leftarrow.png"/>
