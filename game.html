@@ -32,6 +32,7 @@ var lostText;
 var healthPoints = 100;
 var healthBar;
 var healthText;
+var welcomeText, welcomeText2;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -134,6 +135,11 @@ function updatePreGameArea(){
     }*/
     startButton.newPos();
     startButton.update();
+    welcomeText.newPos();
+    welcomeText.update();
+    welcomeText2.newPos();
+    welcomeText2.update();
+
 
 }
 function updatePostGameArea(){
@@ -367,6 +373,12 @@ function accelerateDownBraking(){
 }
 function preStartGame(){
 
+    welcomeText = new Component("30px", "Consolas", "green", 200, 150, "text");
+    welcomeText.text = "Welcome player, drive your Masarati to the Destination";
+
+    welcomeText2 = new Component("30px", "Consolas", "green", 200, 175,
+            "text");
+    welcomeText2.text = "Donot, overspeed and do not crash too much. Eyes on road";
     startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
     startButton.text = "Press 's' key to start";
     gameArea.prestart();
@@ -383,8 +395,8 @@ function startGame(){
         
         */
 	//initialize objects,
-    PLAYER  = new PlayerCarComponent(216/3, 490/3, "red", gameArea.canvas.width/2 ,
-        gameArea.canvas.height*0.70);
+    PLAYER  = new PlayerCarComponent(216/2, 490/2, "car", gameArea.canvas.width/2 ,
+        gameArea.canvas.height*0.59, "image");
 
     leftWall = new Component(gameArea.canvas.width*.33, 2000, "green", 0, -10);
 
