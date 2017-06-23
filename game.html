@@ -160,7 +160,6 @@ function updateGameArea(){
 		trigger random obstacles ?, set speeds of components
        */
     if(dist >= goalDistance){
-        console.log("Winner");
         
         stopGame();
         alert("Winner!");
@@ -178,7 +177,6 @@ function updateGameArea(){
             console.log(healthBar.width);
             if(healthBar.width == 0)
             {
-                console.log("Lost");
                 otherCars[i].newPos();
                 otherCars[i].update();//trying to force show explosion here
                 stopGame();
@@ -186,7 +184,6 @@ function updateGameArea(){
                 location.reload();
             
             }
-            //gameArea.stop();
 
         
         }
