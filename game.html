@@ -33,6 +33,7 @@ var healthPoints = 100;
 var healthBar;
 var healthText;
 var welcomeText, welcomeText2;
+var overSped = false;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -165,6 +166,12 @@ function updateGameArea(){
         alert("Winner!");
 
         postGame();
+    }
+    if(overSped){
+    
+        stopGame();
+        alert("Overspeeding is not a good thing bruh, you lost");
+        location.reload(); 
     }
 
     for(i=0; i< otherCars.length; i++){

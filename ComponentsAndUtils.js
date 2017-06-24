@@ -325,7 +325,8 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
      
     this.speedX = 0;
     this.speedY = 0;
-
+    var overSpeedTimerStarted = false;
+    var overSpeedTimeoutHandle;
     this.update = function() {
         ctx = gameArea.context;
         if (type == "image") {
@@ -336,6 +337,8 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
         }else if (this.type == "text") {
             ctx.font = this.width + " " + this.height;
             ctx.fillStyle = color;
+
+          
             if(Number.parseFloat(this.text) >= Number.parseFloat(speedLimit) )
              {
               ctx.fillStyle = "red";
@@ -346,11 +349,27 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
                 spectatorImage.color = "spectatorscared";
                 spectatorImage.image = document.getElementById(spectatorImage.color);
               spectatorMessage.text = "spec message string...this long... will nee do see!";
-
+                 if(!overSpeedTimerStarted){
+                     overSpeedTimerStarted = true;
+                            overSpeedTimeoutHandle = setTimeout(function(){    overSped = true;
+                     
+                 },5000 );
+                   
+                 }
+              
             }
            else{
               ctx.fillStyle = "#0bc4a7";
                 spectatorMessage.color = "black";
+              if(overSpeedTimeoutHandle != null){
+                      clearTimeout(overSpeedTimeoutHandle);
+               
+              } 
+              if(overSpeedTimerStarted != null){
+
+                    overSpeedTimerStarted = false; 
+               }
+
                spectatorImage.color = "spectatorimage";
                 spectatorImage.image = document.getElementById(spectatorImage.color);
                spectatorMessage.text = "";
