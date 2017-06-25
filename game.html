@@ -35,6 +35,8 @@ var healthBar;
 var healthText;
 var welcomeText, welcomeText2;
 var overSped = false;
+var music;
+var engineStartUpSound;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -379,6 +381,17 @@ function preStartGame(){
     welcomeText2.text = "Donot, overspeed and do not crash too much. Eyes on road";
     startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
     startButton.text = "Press 's' key to start";
+
+    engineStartUpSound = new sound("amgstartup.mp3"); 
+    engineStartUpSound.sound.volume = 0.3;
+    engineStartUpSound.play();
+    engineStartUpSound.sound.onended = function(){
+        engineStartUpSound = new sound("amgrumbleidle.mp3");
+        engineStartUpSound.sound.loop = true;
+        engineStartUpSound.play();
+        engineStartUpSound.sound.volume = 0.175;
+    };
+
     gameArea.prestart();
 }
 function postGame(){
@@ -393,6 +406,9 @@ function startGame(){
         
         */
 	//initialize objects,
+
+
+
     PLAYER  = new PlayerCarComponent(216/2, 490/2, "car", gameArea.canvas.width/2 ,
         gameArea.canvas.height*0.59, "image");
 
@@ -408,7 +424,8 @@ function startGame(){
         (gameArea.canvas.width*.5)-6,-100);
     speedText = new Component("30px", "Consolas", "#0bc4a7", gameArea.canvas.width*.70, 30, "text");
     speedText.text = "Speed :";
-    speedValueText = new SpeedValueComponent("30px", "Consolas", "#0bc4a7", gameArea.canvas.width*.80, 30, "text", 20);
+    speedValueText = new SpeedValueComponent("30px", "Consolas", "#0bc4a7",
+            gameArea.canvas.width*.80, 30, "text", 25);
     speedValueText.text = ""+speed; 
     spectatorImage = new Component(200,
             200,"spectatorimage",gameArea.canvas.width*.10, 40,"image"  );
@@ -441,6 +458,14 @@ function startGame(){
     healthText = new Component("18px", "consolas", "blue",
             gameArea.canvas.width*.10, gameArea.canvas.height*.83, "text");
     healthText.text = "Car Health:";
+    
+
+
+    engineStartUpSound.stop();//perhaps free this memory here later, TODO
+    music = new sound("cheapthrillsedit.mp3");
+    music.sound.loop = true;
+    music.play();
+    music.sound.volume = 0.3;
 
     gameArea.start();
 
