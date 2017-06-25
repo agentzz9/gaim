@@ -37,6 +37,7 @@ var welcomeText, welcomeText2;
 var overSped = false;
 var music;
 var engineStartUpSound;
+var engineIdle1;
 var gameArea = {
 	canvas: document.createElement("canvas"),
     prestart : function() {
@@ -179,10 +180,9 @@ function updateGameArea(){
         if(PLAYER.crashWith(otherCars[i])){
             if(!otherCars[i].destroyed){
             
-                healthBar.width -= 10;
+                healthBar.width -= 0;
             }
             otherCars[i].explode();
-            console.log(healthBar.width);
             if(healthBar.width == 0)
             {
                 otherCars[i].newPos();
@@ -228,13 +228,17 @@ function updateGameArea(){
     }
     if (gameArea.keys && gameArea.keys[38]) {
         accelerateUp();
+        soundEngine.accelerate();
     }
     if(gameArea.keys && !gameArea.keys[38]){
-        accelerateDown(); spectatorMessage.color = "red";
-
+        accelerateDown(); spectatorMessage.color = "red";//this color i dont
+        //remember what it does
+        soundEngine.deccelerate();
+        
     }
     if (gameArea.keys && gameArea.keys[40]) {
         accelerateDownBraking();
+        soundEngine.brake();
     }
 
     gameArea.clear();
@@ -249,6 +253,10 @@ function updateGameArea(){
     speedValueText.text = ""+speed;
     prevDist = dist;
     dist += speed;
+    if(speed == 0)
+    {
+        soundEngine.idle();
+    }
     //console.log(dist);
    
     leftWall.newPos();
@@ -466,6 +474,9 @@ function startGame(){
     music.sound.loop = true;
     music.play();
     music.sound.volume = 0.3;
+    soundEngine.init();
+
+   
 
     gameArea.start();
 

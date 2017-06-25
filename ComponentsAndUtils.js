@@ -544,3 +544,67 @@ function sound(src) {
         this.sound.pause();
     }    
 }
+var soundEngine ={
+
+
+    init : function() {
+        engineIdle1 = new sound("idle2.mp3");
+        engineIdle1.sound.loop = true;
+        engineIdle1.play();
+
+        //engineAccel1 = new sound("accel1.mp3");
+        //engineAccel1.sound.loop = true;
+        engineAccel2 = new sound("accel2.mp3");
+        engineAccel2.sound.loop = true;
+        engineDeccel1 = new sound("deccel1.mp3");
+        engineDeccel1.sound.loop = true;
+        engineDeccelLight = new sound("deccellight.mp3");
+        engineDeccelLight.sound.loop = true;
+
+        this.current = engineIdle1;
+        this.status = "idle";
+    },
+    idle : function(){
+        if(this.status !="idle"){
+
+            this.stopAll();
+            engineIdle1.play();        
+            this.current = engineIdle1;
+            this.status = "idle";
+        }
+    },
+    accelerate : function(){
+        if(this.status != "accelerate"){
+            this.stopAll();
+            engineAccel1.play();
+            this.current = engineAccel2;
+            this.status = "accelerate";
+        }
+    },
+    deccelerate : function(){
+        if(this.status != "deccelerate"){
+
+            this.stopAll();
+            engineDeccelLight.play();
+            this.current = engineDeccelLight;
+            this.status = "deccelerate";
+        }
+    },
+    brake : function(){
+        if(this.status != "brake"){
+
+            this.stopAll();
+            engineDeccel1.play();
+            this.current = engineDeccel1;
+            this.status = "brake";
+        }
+    },
+    stopAll : function(){
+        this.current.stop();
+        //this.current.sound.currentTime = 0;
+    }
+
+
+
+}
+
