@@ -348,7 +348,7 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
 
                 spectatorImage.color = "spectatorscared";
                 spectatorImage.image = document.getElementById(spectatorImage.color);
-              spectatorMessage.text = "spec message string...this long... will nee do see!";
+              spectatorMessage.text = "Do Not overspeed, please Do Not overspeed!";
                  if(!overSpeedTimerStarted){
                      overSpeedTimerStarted = true;
                             overSpeedTimeoutHandle = setTimeout(function(){    overSped = true;
@@ -360,19 +360,24 @@ function SpeedValueComponent(width, height, color, x, y, type, speedLimit) {
             }
            else{
               ctx.fillStyle = "#0bc4a7";
-                spectatorMessage.color = "black";
+              spectatorMessage.color = "black";
               if(overSpeedTimeoutHandle != null){
                       clearTimeout(overSpeedTimeoutHandle);
-               
+
+                        overSpeedTimeoutHandle = null;
+                      spectatorMessage.text = ""; 
               } 
               if(overSpeedTimerStarted != null){
 
                     overSpeedTimerStarted = false; 
+
                }
 
                spectatorImage.color = "spectatorimage";
                 spectatorImage.image = document.getElementById(spectatorImage.color);
-               spectatorMessage.text = "";
+               if(spectatorMessage.text.length == 0)
+               {spectatorMessage.text = "";}
+
               }
             ctx.fillText(this.text, this.x, this.y);
         } else { //rect

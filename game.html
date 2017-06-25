@@ -7,6 +7,7 @@ canvas {
 <script src="./ComponentsAndUtils.js"></script>
 <script type="text/javascript">
 var PLAYER;
+var randomMessages = [];
 var goalDistance = 200000;
 var speed;
 var dist = 0;
@@ -110,8 +111,6 @@ var gameArea = {
 gameArea.canvas.width = 1320;
 gameArea.canvas.height = 600;
 
-
-
 function everyinterval(n) {
     if ((gameArea.frameNo / n) % 1 == 0) {return true;}
     return false;
@@ -163,7 +162,7 @@ function updateGameArea(){
     if(dist >= goalDistance){
         
         stopGame();
-        alert("Winner!");
+        alert("Winner!!! you will know the secret now !!");
 
         postGame();
     }
@@ -187,7 +186,7 @@ function updateGameArea(){
                 otherCars[i].newPos();
                 otherCars[i].update();//trying to force show explosion here
                 stopGame();
-                alert("You Lost");
+                alert("You Crashed and Destroyed your Car!!!");
                 location.reload();
             
             }
@@ -198,6 +197,10 @@ function updateGameArea(){
             //garbageCollect cars passed... TODO
 
         }
+
+    }
+    if(everyinterval(500)){
+       spectatorMessage.text = getRandomMessage(); 
 
     }
     if(everyinterval(100)){
@@ -215,23 +218,6 @@ function updateGameArea(){
         otherCars.push(tempCar);
         //console.log(otherCars[otherCars.length-1].speedY+" push Event "+otherCars.length); 
     }
-    /*
-    for(i=0; i<roadLines.length; i+=1){
-        if(roadLines[i].y >= gameArea.canvas.height){
-            roadLines.push(
-                     new Component(15, 100, "white", (gameArea.canvas.width*.5)-6,
-            0)
-
-                    );
-            roadLines.splice(0, 1); 
-            break;
-        }
-    }*/
-
-    /*for(i=0; i<otherCars.length; i+=1){
-        console.log(otherCars[i].y);
-    }*/
-    //console.log(otherCars.length);
     
     if (gameArea.keys && gameArea.keys[37]) {moveLeft(); }
     if (gameArea.keys && gameArea.keys[39]) {moveRight(); }
@@ -442,11 +428,12 @@ function startGame(){
     "playericon",gameArea.canvas.width*.72,480,
             "image");    
 
-    healthBar = new Component(healthPoints, 30,"#8c0000",gameArea.canvas.width*.20,
+    healthBar = new Component(healthPoints,
+        30,"#8c0000",gameArea.canvas.width*.10,
             gameArea.canvas.height*.86); 
 
     healthText = new Component("18px", "consolas", "blue",
-            gameArea.canvas.width*.20, gameArea.canvas.height*.83, "text");
+            gameArea.canvas.width*.10, gameArea.canvas.height*.83, "text");
     healthText.text = "Car Health:";
 
     gameArea.start();
@@ -454,6 +441,22 @@ function startGame(){
 }
 function stopGame(){
 	gameArea.stop();
+}
+function initRandomMessages(){
+
+    randomMessages.push("Hi, bruh");
+    randomMessages.push("the goal is to reach the destination");
+    randomMessages.push("donot overspeed/cheat");
+    randomMessages.push("donot crash too much");
+    randomMessages.push("at the destination, you will know the secret");
+
+}
+initRandomMessages();
+function getRandomMessage(){
+    
+    var i = Math.floor((Math.random()*randomMessages.length));
+    return randomMessages[i];
+
 }
 window.onload = preStartGame;
 </script>
@@ -463,7 +466,6 @@ window.onload = preStartGame;
 <button onclick="postGame()">postgame</button>
 <span id="speed"></span><span id="speed2"></span>
 <img hidden id="car" src="carimage.png"/>
-<img hidden id="speedoimage" src="masdash.png"/>
 <img hidden id="spectatorimage" src="spectatorimage.png"/>
 <img hidden id="spectatorscared" src="spectatorscared.png"/>
 <img hidden id="fireimage" src="spark.gif"/>
@@ -476,10 +478,6 @@ window.onload = preStartGame;
 <img hidden id="othercar4" src="othercar4.png"/>
 <img hidden id="othercar5" src="othercar5.png"/>
 <img hidden id="othercar6" src="othercar6.png"/>
-
-
-
-
 
 
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
