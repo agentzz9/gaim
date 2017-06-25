@@ -292,10 +292,16 @@ function updateGameArea(){
 
 }
 function moveLeft(){
-    PLAYER.speedX = -10;
+        if(speed > 0){
+
+                
+        PLAYER.speedX = -10;
+    }
 }
 function moveRight(){
-    PLAYER.speedX = +10;
+    if(speed > 0 ){
+            PLAYER.speedX = +10;
+        }
 }
 function moveLeftRight(){
     PLAYER.speedX = 0;
