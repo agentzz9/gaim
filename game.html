@@ -1,9 +1,15 @@
-<html><head><style>
-canvas {
-    border:1px solid #d3d3d3;
-    background-color: #f1f1f1;
-}
-</style></head><body></body>
+<html>
+
+<head>
+    <style>
+    canvas {
+        border: 1px solid #d3d3d3;
+        background-color: #f1f1f1;
+    }
+    </style>
+</head>
+
+<body></body>
 <script src="./ComponentsAndUtils.js"></script>
 <script type="text/javascript">
 var PLAYER;
@@ -24,7 +30,7 @@ var spectatorImage;
 var spectatorMessage;
 var startIcon;
 var endIcon;
-var startIconText; 
+var startIconText;
 var endIconText;
 var progressBackgroundStrip;
 var playerIcon;
@@ -39,89 +45,91 @@ var music;
 var engineStartUpSound;
 var engineIdle1;
 var gameArea = {
-	canvas: document.createElement("canvas"),
-    prestart : function() {
-        this.canvas.width = 1320;
-        this.canvas.height = 600;
-        this.canvas.style = "background-color:#404142";
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.frameNo = 0;
-        window.addEventListener('keydown', function (e) {
-                e.preventDefault();//prevent scroll of window :(
+        canvas: document.createElement("canvas"),
+        prestart: function() {
+            this.canvas.width = 1320;
+            this.canvas.height = 600;
+            this.canvas.style = "background-color:#404142";
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.frameNo = 0;
+            window.addEventListener('keydown', function(e) {
+                e.preventDefault(); //prevent scroll of window :(
                 gameArea.keys = (gameArea.keys || []);
                 gameArea.keys[e.keyCode] = true;
                 //console.log(e.keyCode);
             })
-        window.addEventListener('keyup', function (e) {
-            gameArea.keys[e.keyCode] = false; 
-        })
-           
-        this.interval = setInterval(updatePreGameArea, 20);
-    },
-    poststart : function() {
-        this.canvas.width = 1320;
-        this.canvas.height = 600;
-        this.canvas.style = "background-color:#404142";
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.frameNo = 0;
-        window.addEventListener('keydown', function (e) {
-                e.preventDefault();//prevent scroll of window :(
+            window.addEventListener('keyup', function(e) {
+                gameArea.keys[e.keyCode] = false;
+            })
+
+            this.interval = setInterval(updatePreGameArea, 20);
+        },
+        poststart: function() {
+            this.canvas.width = 1320;
+            this.canvas.height = 600;
+            this.canvas.style = "background-color:#404142";
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.frameNo = 0;
+            window.addEventListener('keydown', function(e) {
+                e.preventDefault(); //prevent scroll of window :(
                 gameArea.keys = (gameArea.keys || []);
                 gameArea.keys[e.keyCode] = true;
                 //console.log(e.keyCode);
             })
-        window.addEventListener('keyup', function (e) {
-            gameArea.keys[e.keyCode] = false; 
-        })
+            window.addEventListener('keyup', function(e) {
+                gameArea.keys[e.keyCode] = false;
+            })
 
-        this.interval = setInterval(updatePostGameArea, 20);
+            this.interval = setInterval(updatePostGameArea, 20);
 
 
-    },
-    start : function() {
-        this.canvas.width = 1320;
-        this.canvas.height = 600;
-        this.canvas.style = "background-color:#404142";
-        this.context = this.canvas.getContext("2d");
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.frameNo = 0;
-        window.addEventListener('keydown', function (e) {
-                e.preventDefault();//prevent scroll of window :(
+        },
+        start: function() {
+            this.canvas.width = 1320;
+            this.canvas.height = 600;
+            this.canvas.style = "background-color:#404142";
+            this.context = this.canvas.getContext("2d");
+            document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+            this.frameNo = 0;
+            window.addEventListener('keydown', function(e) {
+                e.preventDefault(); //prevent scroll of window :(
                 gameArea.keys = (gameArea.keys || []);
                 gameArea.keys[e.keyCode] = true;
             })
-        window.addEventListener('keyup', function (e) {
-            gameArea.keys[e.keyCode] = false; 
-        })
-        this.interval = setInterval(updateGameArea, 20);
+            window.addEventListener('keyup', function(e) {
+                gameArea.keys[e.keyCode] = false;
+            })
+            this.interval = setInterval(updateGameArea, 20);
 
-    },
-    clear : function() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-    },
-    stop : function() {
-        clearInterval(this.interval);
+        },
+        clear: function() {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        },
+        stop: function() {
+            clearInterval(this.interval);
+        }
     }
-}
-/*following two lines needed to correct a false start with incorrect width and
-  height, which made me invoke startgame again, which messed up the
-  gameinterval, (2 intervals..... on stop only the latest stops... not the
-  first one.... it goes on for eternity, side effect apparantly higher
-  framerate bah humbug ?!*/
+    /*following two lines needed to correct a false start with incorrect width and
+      height, which made me invoke startgame again, which messed up the
+      gameinterval, (2 intervals..... on stop only the latest stops... not the
+      first one.... it goes on for eternity, side effect apparantly higher
+      framerate bah humbug ?!*/
 gameArea.canvas.width = 1320;
 gameArea.canvas.height = 600;
 
 function everyinterval(n) {
-    if ((gameArea.frameNo / n) % 1 == 0) {return true;}
+    if ((gameArea.frameNo / n) % 1 == 0) {
+        return true;
+    }
     return false;
 }
 
-function updatePreGameArea(){
+function updatePreGameArea() {
 
-    
+
     gameArea.clear();
     gameArea.frameNo += 1;
     if (gameArea.keys && gameArea.keys[83]) {
@@ -145,96 +153,101 @@ function updatePreGameArea(){
 
 
 }
-function updatePostGameArea(){
+
+function updatePostGameArea() {
 
     gameArea.clear();
-    gameArea.frameNo +=1;
-    if(gameArea.keys && gameArea.keys[83]){//TODO
+    gameArea.frameNo += 1;
+    if (gameArea.keys && gameArea.keys[83]) { //TODO
         gameArea.stop();
         stopGame();
-    
+
     }
     startButton.newPos();
     startButton.update();
 }
-function updateGameArea(){
 
-	/*detect collisions, win/lose conditions, parse inputs, 
-		trigger random obstacles ?, set speeds of components
+function updateGameArea() {
+
+    /*detect collisions, win/lose conditions, parse inputs, 
+        trigger random obstacles ?, set speeds of components
        */
-    if(dist >= goalDistance){
-        
+    if (dist >= goalDistance) {
+
         stopGame();
         alert("Winner!!! you will know the secret now !!");
 
         postGame();
     }
-    if(overSped){
-    
+    if (overSped) {
+
         stopGame();
         alert("Overspeeding is not a good thing bruh, you lost");
-        location.reload(); 
+        location.reload();
     }
 
-    for(i=0; i< otherCars.length; i++){
-        if(PLAYER.crashWith(otherCars[i])){
-            if(!otherCars[i].destroyed){
-            
+    for (i = 0; i < otherCars.length; i++) {
+        if (PLAYER.crashWith(otherCars[i])) {
+            if (!otherCars[i].destroyed) {
+
                 healthBar.width -= 0;
             }
             otherCars[i].explode();
-            if(healthBar.width == 0)
-            {
+            if (healthBar.width == 0) {
                 otherCars[i].newPos();
-                otherCars[i].update();//trying to force show explosion here
+                otherCars[i].update(); //trying to force show explosion here
                 stopGame();
                 alert("You Crashed and Destroyed your Car!!!");
                 location.reload();
-            
+
             }
 
-        
+
         }
-        if(otherCars[i].y>600){
+        if (otherCars[i].y > 600) {
             //garbageCollect cars passed... TODO
 
         }
 
     }
-    if(everyinterval(500)){
-       spectatorMessage.text = getRandomMessage(); 
+    if (everyinterval(500)) {
+        spectatorMessage.text = getRandomMessage();
 
     }
-    if(everyinterval(100)){
-   /* 
+    if (everyinterval(100)) {
+        /* 
         tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
             -25);
 */
         var randXonRoadVar = randXonRoad();
-        tempCar = new OtherCarComponent(90, 120, "othercar", randXonRoadVar,
-                -1500, "image");
-      
-        tempCar.speedY = -1* randSpeed();
+        tempCar = new OtherCarComponent(90, 120, "othercar", randXonRoadVar, -1500, "image");
+
+        tempCar.speedY = -1 * randSpeed();
         tempCar.speedYInit = tempCar.speedY;
-//       tempCar.speedYBias = -1;
+        //       tempCar.speedYBias = -1;
         otherCars.push(tempCar);
         //console.log(otherCars[otherCars.length-1].speedY+" push Event "+otherCars.length); 
     }
-    
-    if (gameArea.keys && gameArea.keys[37]) {moveLeft(); }
-    if (gameArea.keys && gameArea.keys[39]) {moveRight(); }
-    if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]){
+
+    if (gameArea.keys && gameArea.keys[37]) {
+        moveLeft();
+    }
+    if (gameArea.keys && gameArea.keys[39]) {
+        moveRight();
+    }
+    if (gameArea.keys && !gameArea.keys[37] && !gameArea.keys[39]) {
         moveLeftRight();
     }
     if (gameArea.keys && gameArea.keys[38]) {
         accelerateUp();
         soundEngine.accelerate();
     }
-    if(gameArea.keys && !gameArea.keys[38]){
-        accelerateDown(); spectatorMessage.color = "red";//this color i dont
+    if (gameArea.keys && !gameArea.keys[38]) {
+        accelerateDown();
+        spectatorMessage.color = "red"; //this color i dont
         //remember what it does
         soundEngine.deccelerate();
-        
+
     }
     if (gameArea.keys && gameArea.keys[40]) {
         accelerateDownBraking();
@@ -243,22 +256,21 @@ function updateGameArea(){
 
     gameArea.clear();
     gameArea.frameNo += 1;
-	//console.log(gameArea.frameNo);
-	/*
-	update components.redraw frame
-	*/
+    //console.log(gameArea.frameNo);
+    /*
+    update components.redraw frame
+    */
     roadLine1.newPos();
     roadLine1.update();
-    speed = roadLine1.speedY;//console.log(speed);
-    speedValueText.text = ""+speed;
+    speed = roadLine1.speedY; //console.log(speed);
+    speedValueText.text = "" + speed;
     prevDist = dist;
     dist += speed;
-    if(speed == 0)
-    {
+    if (speed == 0) {
         soundEngine.idle();
     }
     //console.log(dist);
-   
+
     leftWall.newPos();
     leftWall.update();
     rightWall.newPos();
@@ -291,29 +303,32 @@ function updateGameArea(){
     healthBar.newPos();
     healthBar.update();
     healthText.newPos();
-    healthText.update(); 
-    for(i=0; i<otherCars.length; i+=1){
-        otherCars[i].speedY = speed+otherCars[i].speedYInit;
+    healthText.update();
+    for (i = 0; i < otherCars.length; i += 1) {
+        otherCars[i].speedY = speed + otherCars[i].speedYInit;
         otherCars[i].newPos();
         otherCars[i].update();
-    } 
+    }
     PLAYER.newPos();
     PLAYER.update();
 
 }
-function moveLeft(){
-        if(speed > 0){
 
-                
+function moveLeft() {
+    if (speed > 0) {
+
+
         PLAYER.speedX = -10;
     }
 }
-function moveRight(){
-    if(speed > 0 ){
-            PLAYER.speedX = +10;
-        }
+
+function moveRight() {
+    if (speed > 0) {
+        PLAYER.speedX = +10;
+    }
 }
-function moveLeftRight(){
+
+function moveLeftRight() {
     PLAYER.speedX = 0;
 }
 /*function moveUp(){
@@ -340,60 +355,59 @@ function moveUpDown(){
         roadLine1.speedY = -1;
     }
 }*/
-        
-function accelerateUp(){
-        document.getElementById("speed").innerHTML =
+
+function accelerateUp() {
+    document.getElementById("speed").innerHTML =
         Math.round(roadLine1.speedY);
-        document.getElementById("speed2").innerHTML
-        ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1)); 
-        var cacheRoadLine1Speed = roadLine1.speedY;
-        roadLine1.speedY = Math.min(
-            (roadLine1.speedY +
-                Math.cbrt(1/(1000*Math.max(roadLine1.speedY,1))))
-            ,50);
+    document.getElementById("speed2").innerHTML = "  " + Math.cbrt(1 / Math.max(roadLine1.speedY, 1));
+    var cacheRoadLine1Speed = roadLine1.speedY;
+    roadLine1.speedY = Math.min(
+        (roadLine1.speedY +
+            Math.cbrt(1 / (1000 * Math.max(roadLine1.speedY, 1)))), 50);
 
 }
-function accelerateDown(){
+
+function accelerateDown() {
 
     document.getElementById("speed").innerHTML =
-    Math.round(roadLine1.speedY);
+        Math.round(roadLine1.speedY);
     //document.getElementById("speed2").innerHTML
-     //    ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
-     var cacheRoadLine1Speed = roadLine1.speedY;
-     roadLine1.speedY = Math.max(
+    //    ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
+    var cacheRoadLine1Speed = roadLine1.speedY;
+    roadLine1.speedY = Math.max(
         (roadLine1.speedY -
-            Math.cbrt(1/(1000*Math.max(roadLine1.speedY,1))))
-        ,0);
+            Math.cbrt(1 / (1000 * Math.max(roadLine1.speedY, 1)))), 0);
 }
-function accelerateDownBraking(){
+
+function accelerateDownBraking() {
 
     document.getElementById("speed").innerHTML =
-    Math.round(roadLine1.speedY);
+        Math.round(roadLine1.speedY);
     //document.getElementById("speed2").innerHTML
     //     ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
     var cacheRoadLine1Speed = roadLine1.speedY;
 
     roadLine1.speedY = Math.max(
         (roadLine1.speedY -
-            Math.cbrt(1/(100*Math.max(roadLine1.speedY,1))))
-        ,0);
+            Math.cbrt(1 / (100 * Math.max(roadLine1.speedY, 1)))), 0);
 
 }
-function preStartGame(){
+
+function preStartGame() {
 
     welcomeText = new Component("30px", "Consolas", "green", 200, 150, "text");
     welcomeText.text = "Welcome player, drive your Masarati to the Destination";
 
     welcomeText2 = new Component("30px", "Consolas", "green", 200, 175,
-            "text");
+        "text");
     welcomeText2.text = "Donot, overspeed and do not crash too much. Eyes on road";
     startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
     startButton.text = "Press 's' key to start";
 
-    engineStartUpSound = new sound("amgstartup.mp3"); 
+    engineStartUpSound = new sound("amgstartup.mp3");
     engineStartUpSound.sound.volume = 0.3;
     engineStartUpSound.play();
-    engineStartUpSound.sound.onended = function(){
+    engineStartUpSound.sound.onended = function() {
         engineStartUpSound = new sound("amgrumbleidle.mp3");
         engineStartUpSound.sound.loop = true;
         engineStartUpSound.play();
@@ -402,89 +416,92 @@ function preStartGame(){
 
     gameArea.prestart();
 }
-function postGame(){
+
+function postGame() {
     startButton = new Component("30px", "Consolas", "green", 200, 200, "text");
     startButton.text = "winning message";
     gameArea.poststart();
 
 
 }
-function startGame(){
-	/*
+
+function startGame() {
+    /*
         
         */
-	//initialize objects,
+    //initialize objects,
 
 
 
-    PLAYER  = new PlayerCarComponent(216/2, 490/2, "car", gameArea.canvas.width/2 ,
-        gameArea.canvas.height*0.59, "image");
+    PLAYER = new PlayerCarComponent(216 / 2, 490 / 2, "car", gameArea.canvas.width / 2,
+        gameArea.canvas.height * 0.59, "image");
 
-    leftWall = new Component(gameArea.canvas.width*.33, 2000, "#60ea10", 0, -10);
+    leftWall = new Component(gameArea.canvas.width * .33, 2000, "#60ea10", 0, -10);
 
-    rightWall = new Component(gameArea.canvas.width*.33, 2000, "#60ea10",
-        gameArea.canvas.width*.67, -10);
-    sideline1 = new Component(15, 3000, "white", (gameArea.canvas.width*.33)+6,
-        -10);
+    rightWall = new Component(gameArea.canvas.width * .33, 2000, "#60ea10",
+        gameArea.canvas.width * .67, -10);
+    sideline1 = new Component(15, 3000, "white", (gameArea.canvas.width * .33) + 6, -10);
     sideline2 = new Component(15, 3000, "white",
-        (gameArea.canvas.width*.67)-21,-10);
+        (gameArea.canvas.width * .67) - 21, -10);
     roadLine1 = new RoadlineComponent(15, 100, "white",
-        (gameArea.canvas.width*.5)-6,-100);
-    speedText = new Component("30px", "Consolas", "#0bc4a7", gameArea.canvas.width*.70, 30, "text");
+        (gameArea.canvas.width * .5) - 6, -100);
+    speedText = new Component("30px", "Consolas", "#0bc4a7", gameArea.canvas.width * .70, 30, "text");
     speedText.text = "Speed :";
     speedValueText = new SpeedValueComponent("30px", "Consolas", "#0bc4a7",
-            gameArea.canvas.width*.80, 30, "text", 25);
-    speedValueText.text = ""+speed; 
+        gameArea.canvas.width * .80, 30, "text", 25);
+    speedValueText.text = "" + speed;
     spectatorImage = new Component(200,
-            200,"spectatorimage",gameArea.canvas.width*.10, 40,"image"  );
+        200, "spectatorimage", gameArea.canvas.width * .10, 40, "image");
     spectatorMessage = new Component("25px", "Consolas", "black",
-            gameArea.canvas.width*.025,
-            20+spectatorImage.y+spectatorImage.width,"text");
+        gameArea.canvas.width * .025,
+        20 + spectatorImage.y + spectatorImage.width, "text");
     spectatorMessage.text = "";
 
-    startIcon = new Component(100, 100, "starticon", gameArea.canvas.width*.70,
-            480,"image");
+    startIcon = new Component(100, 100, "starticon", gameArea.canvas.width * .70,
+        480, "image");
     startIconText = new Component("25px", "Consolas", "#396c2b",
-        gameArea.canvas.width*.80,500, "text");
+        gameArea.canvas.width * .80, 500, "text");
     startIconText.text = "home";
-    endIcon = new Component(100, 100, "endicon", gameArea.canvas.width*.70,
+    endIcon = new Component(100, 100, "endicon", gameArea.canvas.width * .70,
         60, "image");
     endIconText = new Component("25px", "Consolas", "#396c2b",
-        gameArea.canvas.width*.80,80, "text");
+        gameArea.canvas.width * .80, 80, "text");
     endIconText.text = "Destination";
 
     progressBackgroundStrip = new Component(30, 400, "#865521",
-            gameArea.canvas.width*.75, 80);
-    playerIcon = new PlayerIconComponent(80,80,
-    "playericon",gameArea.canvas.width*.72,480,
-            "image");    
+        gameArea.canvas.width * .75, 80);
+    playerIcon = new PlayerIconComponent(80, 80,
+        "playericon", gameArea.canvas.width * .72, 480,
+        "image");
 
     healthBar = new Component(healthPoints,
-        30,"#8c0000",gameArea.canvas.width*.10,
-            gameArea.canvas.height*.86); 
+        30, "#8c0000", gameArea.canvas.width * .10,
+        gameArea.canvas.height * .86);
 
     healthText = new Component("18px", "consolas", "blue",
-            gameArea.canvas.width*.10, gameArea.canvas.height*.83, "text");
+        gameArea.canvas.width * .10, gameArea.canvas.height * .83, "text");
     healthText.text = "Car Health:";
-    
 
 
-    engineStartUpSound.stop();//perhaps free this memory here later, TODO
+
+    engineStartUpSound.stop(); //perhaps free this memory here later, TODO
     music = new sound("cheapthrillsedit.mp3");
     music.sound.loop = true;
     music.play();
     music.sound.volume = 0.3;
     soundEngine.init();
 
-   
+
 
     gameArea.start();
 
 }
-function stopGame(){
-	gameArea.stop();
+
+function stopGame() {
+    gameArea.stop();
 }
-function initRandomMessages(){
+
+function initRandomMessages() {
 
     randomMessages.push("Hi, bruh");
     randomMessages.push("the goal is to reach the destination");
@@ -494,9 +511,10 @@ function initRandomMessages(){
 
 }
 initRandomMessages();
-function getRandomMessage(){
-    
-    var i = Math.floor((Math.random()*randomMessages.length));
+
+function getRandomMessage() {
+
+    var i = Math.floor((Math.random() * randomMessages.length));
     return randomMessages[i];
 
 }
@@ -507,25 +525,22 @@ window.onload = preStartGame;
 <button onclick="stopGame()">stopgame</button>
 <button onclick="postGame()">postgame</button>
 <span id="speed"></span><span id="speed2"></span>
-<img hidden id="car" src="carimage.png"/>
-<img hidden id="spectatorimage" src="spectatorimage.png"/>
-<img hidden id="spectatorscared" src="spectatorscared.png"/>
-<img hidden id="fireimage" src="spark.gif"/>
-<img hidden id="starticon" src="starticon.png"/>
-<img hidden id="endicon" src="endicon.png"/>
-<img hidden id="playericon" src="playericon.png"/>
-<img hidden id="othercar1" src="othercar1.png"/>
-<img hidden id="othercar2" src="othercar2.png"/>
-<img hidden id="othercar3" src="othercar3.png"/>
-<img hidden id="othercar4" src="othercar4.png"/>
-<img hidden id="othercar5" src="othercar5.png"/>
-<img hidden id="othercar6" src="othercar6.png"/>
-
-
+<img hidden id="car" src="carimage.png" />
+<img hidden id="spectatorimage" src="spectatorimage.png" />
+<img hidden id="spectatorscared" src="spectatorscared.png" />
+<img hidden id="fireimage" src="spark.gif" />
+<img hidden id="starticon" src="starticon.png" />
+<img hidden id="endicon" src="endicon.png" />
+<img hidden id="playericon" src="playericon.png" />
+<img hidden id="othercar1" src="othercar1.png" />
+<img hidden id="othercar2" src="othercar2.png" />
+<img hidden id="othercar3" src="othercar3.png" />
+<img hidden id="othercar4" src="othercar4.png" />
+<img hidden id="othercar5" src="othercar5.png" />
+<img hidden id="othercar6" src="othercar6.png" />
 <!-- <img hidden id="uparrow" src="uparrow.png"/>
 <img hidden id="downarrow" src="downarrow.png"/>
 <img hidden id="leftarrow" src="leftarrow.png"/>
 <img hidden id="rightarrow" src="rightarrow.png"/> -->
-
 
 </html>
