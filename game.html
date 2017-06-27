@@ -44,6 +44,7 @@ var overSped = false;
 var music;
 var engineStartUpSound;
 var engineIdle1;
+var crashSound;
 var gameArea = {
         canvas: document.createElement("canvas"),
         prestart: function() {
@@ -189,7 +190,7 @@ function updateGameArea() {
     for (i = 0; i < otherCars.length; i++) {
         if (PLAYER.crashWith(otherCars[i])) {
             if (!otherCars[i].destroyed) {
-
+                crashSound.play();
                 healthBar.width -= 0;
             }
             otherCars[i].explode();
@@ -489,9 +490,12 @@ function startGame() {
     music.sound.loop = true;
     music.play();
     music.sound.volume = 0.3;
-    soundEngine.init();
+        
+    soundEngine.init();/*needed to ensure engine sounds function (approx)
+        accurately plain play till end wont work for obvious reasons*/
 
-
+    crashSound = new sound("crash1.mp3");
+    music.sound.volume = 0.4;
 
     gameArea.start();
 
