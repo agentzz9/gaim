@@ -138,13 +138,6 @@ function updatePreGameArea() {
         startGame();
     }
 
-    /*if(gameArea.x && gameArea.y){
-        //debugger;
-        if( startButton.isClicked() ){
-            gameArea.stop();
-            startGame();
-        }
-    }*/
     startButton.newPos();
     startButton.update();
     welcomeText.newPos();
@@ -191,7 +184,7 @@ function updateGameArea() {
         if (PLAYER.crashWith(otherCars[i])) {
             if (!otherCars[i].destroyed) {
                 crashSound.play();
-                healthBar.width -= 0;
+                healthBar.width -= 5;
             }
             otherCars[i].explode();
             if (healthBar.width == 0) {
@@ -216,18 +209,12 @@ function updateGameArea() {
 
     }
     if (everyinterval(100)) {
-        /* 
-        tempCar = new OtherCarComponent(50, 75, "blue", gameArea.canvas.width/2,
-            -25);
-*/
         var randXonRoadVar = randXonRoad();
         tempCar = new OtherCarComponent(90, 120, "othercar", randXonRoadVar, -1500, "image");
 
         tempCar.speedY = -1 * randSpeed();
         tempCar.speedYInit = tempCar.speedY;
-        //       tempCar.speedYBias = -1;
         otherCars.push(tempCar);
-        //console.log(otherCars[otherCars.length-1].speedY+" push Event "+otherCars.length); 
     }
 
     if (gameArea.keys && gameArea.keys[37]) {
@@ -257,7 +244,6 @@ function updateGameArea() {
 
     gameArea.clear();
     gameArea.frameNo += 1;
-    //console.log(gameArea.frameNo);
     /*
     update components.redraw frame
     */
@@ -332,35 +318,8 @@ function moveRight() {
 function moveLeftRight() {
     PLAYER.speedX = 0;
 }
-/*function moveUp(){
-    for(i=0; i<roadLines.length; i+=1){
-        roadLines[i].speedY  = +1; 
-    }
-    roadLine1.speedY = +1;
-    for(i=0; i<otherCars.length; i+=1){
-        otherCars[i].speedY += 1;
-    }
-}
-function moveUpDown(){
-    for(i=0; i<roadLines.length; i+=1){
-        roadLines[i].speedY  = 0; 
-    }
-    roadLine1.speedY = 0;
-    for(i=0; i<otherCars.length; i+=1){
-        //otherCars[i].speedY = 5; 
-    }
-    function moveDown(){
-        for(i=0; i<roadLines.length; i+=1){
-            roadLines[i].speedY = -1;
-        }
-        roadLine1.speedY = -1;
-    }
-}*/
 
 function accelerateUp() {
-    document.getElementById("speed").innerHTML =
-        Math.round(roadLine1.speedY);
-    document.getElementById("speed2").innerHTML = "  " + Math.cbrt(1 / Math.max(roadLine1.speedY, 1));
     var cacheRoadLine1Speed = roadLine1.speedY;
     roadLine1.speedY = Math.min(
         (roadLine1.speedY +
@@ -370,10 +329,6 @@ function accelerateUp() {
 
 function accelerateDown() {
 
-    document.getElementById("speed").innerHTML =
-        Math.round(roadLine1.speedY);
-    //document.getElementById("speed2").innerHTML
-    //    ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
     var cacheRoadLine1Speed = roadLine1.speedY;
     roadLine1.speedY = Math.max(
         (roadLine1.speedY -
@@ -382,10 +337,6 @@ function accelerateDown() {
 
 function accelerateDownBraking() {
 
-    document.getElementById("speed").innerHTML =
-        Math.round(roadLine1.speedY);
-    //document.getElementById("speed2").innerHTML
-    //     ="  "+Math.cbrt(1/Math.max(roadLine1.speedY,1));
     var cacheRoadLine1Speed = roadLine1.speedY;
 
     roadLine1.speedY = Math.max(
@@ -489,13 +440,13 @@ function startGame() {
     music = new sound("cheapthrillsedit.mp3");
     music.sound.loop = true;
     music.play();
-    music.sound.volume = 0.3;
+    music.sound.volume = 0.6;
         
     soundEngine.init();/*needed to ensure engine sounds function (approx)
         accurately plain play till end wont work for obvious reasons*/
 
     crashSound = new sound("crash1.mp3");
-    music.sound.volume = 0.4;
+    crashSound.sound.volume = 0.5;
 
     gameArea.start();
 
@@ -524,10 +475,6 @@ function getRandomMessage() {
 }
 window.onload = preStartGame;
 </script>
-<button onclick="preStartGame()">prestartgame</button>
-<button onclick="startGame()">startgame</button>
-<button onclick="stopGame()">stopgame</button>
-<button onclick="postGame()">postgame</button>
 <span id="speed"></span><span id="speed2"></span>
 <img hidden id="car" src="carimage.png" />
 <img hidden id="spectatorimage" src="spectatorimage.png" />
@@ -542,9 +489,5 @@ window.onload = preStartGame;
 <img hidden id="othercar4" src="othercar4.png" />
 <img hidden id="othercar5" src="othercar5.png" />
 <img hidden id="othercar6" src="othercar6.png" />
-<!-- <img hidden id="uparrow" src="uparrow.png"/>
-<img hidden id="downarrow" src="downarrow.png"/>
-<img hidden id="leftarrow" src="leftarrow.png"/>
-<img hidden id="rightarrow" src="rightarrow.png"/> -->
 
 </html>

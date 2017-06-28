@@ -549,15 +549,18 @@ var soundEngine = {
     init: function() {
         engineIdle1 = new sound("idle2.mp3");
         engineIdle1.sound.loop = true;
+        engineIdle1.sound.volume = 0.4;
         engineIdle1.play();
-
         //engineAccel1 = new sound("accel1.mp3");
         //engineAccel1.sound.loop = true;
         engineAccel2 = new sound("accel2.mp3");
         engineAccel2.sound.loop = true;
+        engineAccel2.sound.volume = 0.4;
         engineDeccel1 = new sound("deccel1.mp3");
+        engineDeccel1.sound.volume = 0.4;
         engineDeccel1.sound.loop = true;
         engineDeccelLight = new sound("deccellight.mp3");
+        engineDeccelLight.sound.volume = 0.4;
         engineDeccelLight.sound.loop = true;
 
         this.current = engineIdle1;
@@ -602,7 +605,5 @@ var soundEngine = {
         this.current.stop();
         //this.current.sound.currentTime = 0;
     }
-
-
 
 }
